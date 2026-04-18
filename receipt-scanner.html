@@ -130,6 +130,8 @@
   .cat-Other{background:var(--surface2);color:var(--ink2);}
 
   /* RECEIPTS LIST */
+  .receipt-card-expand{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:border-color 0.15s;overflow:hidden;}
+  .receipt-card-expand:hover{box-shadow:0 2px 8px rgba(43,95,62,0.07);}
   .receipts-list{display:flex;flex-direction:column;gap:10px;}
   .receipt-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.15s;}
   .receipt-row:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(43,95,62,0.08);}
@@ -976,38 +978,114 @@ function hideSaving(){document.getElementById('saving-overlay').style.display='n
 async function renderReceiptsList(){
   const wrap=document.getElementById('receipts-list-container')
   wrap.innerHTML=`<div style="color:var(--ink3);font-size:13px;padding:20px 0;">Loading...</div>`
-  const {data,error}=await supabase.from('receipts').select('id,receipt_date,total_amount,stores(name)').order('receipt_date',{ascending:false}).limit(100)
-  if(error||!data?.length){wrap.innerHTML=`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>No receipts yet</h3><p>Scan your first receipt to get started</p></div>`;return}
-  wrap.innerHTML=`<div class="receipts-list">${data.map(r=>`
-    <div class="receipt-row" style="cursor:default;">
-      <div onclick="loadReceipt('${r.id}')" style="flex:1;display:flex;align-items:center;gap:16px;cursor:pointer;min-width:0;">
-        <div class="receipt-store">${esc(r.stores?.name||'Unknown')}</div>
-        <div class="receipt-meta">${fmtDate(r.receipt_date)}</div>
-        <div class="receipt-amount">R ${Number(r.total_amount).toFixed(2)}</div>
+  // Fetch receipts AND their items in one go so we can show categories inline
+  const {data:receipts,error}=await supabase.from('receipts')
+    .select('id,receipt_date,total_amount,stores(name),receipt_items(id,name,price,quantity,category)')
+    .order('receipt_date',{ascending:false}).limit(100)
+  if(error||!receipts?.length){
+    wrap.innerHTML=`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>No receipts yet</h3><p>Scan your first receipt to get started</p></div>`
+    return
+  }
+  const colors=getCatColors()
+  wrap.innerHTML=`<div class="receipts-list">${receipts.map(r=>{
+    const items=r.receipt_items||[]
+    // Unique categories on this receipt
+    const cats=[...new Set(items.map(i=>i.category).filter(Boolean))]
+    const catBadges=cats.map(c=>`<span style="display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;background:${colors[c]||'#888'}22;color:${colors[c]||'#888'};border:1px solid ${colors[c]||'#888'}44;">${esc(c)}</span>`).join(' ')
+    const itemSummary=items.slice(0,3).map(i=>esc(i.name)).join(', ')+(items.length>3?` +${items.length-3} more`:'')
+    return`<div class="receipt-card-expand" id="rcard-${r.id}">
+      <!-- HEADER ROW — always visible -->
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;" onclick="toggleReceiptExpand('${r.id}')">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-weight:500;font-size:14px;">${esc(r.stores?.name||'Unknown')}</span>
+            <span style="font-size:12px;color:var(--ink3);">${fmtDate(r.receipt_date)}</span>
+          </div>
+          <div style="margin-top:5px;display:flex;gap:4px;flex-wrap:wrap;">${catBadges||'<span style="font-size:11px;color:var(--ink3);">No categories</span>'}</div>
+          <div style="font-size:11px;color:var(--ink3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${itemSummary}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-family:var(--font-mono);font-size:15px;font-weight:500;">R ${Number(r.total_amount).toFixed(2)}</div>
+          <div style="font-size:11px;color:var(--ink3);margin-top:2px;">${items.length} item${items.length===1?'':'s'} ▾</div>
+        </div>
       </div>
-      <button onclick="confirmDeleteReceipt('${r.id}','${esc(r.stores?.name||'Unknown')}','${r.receipt_date}')"
-        style="flex-shrink:0;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:6px;color:var(--ink3);margin-left:4px;"
-        title="Delete receipt"
-        onmouseover="this.style.background='var(--red-light)';this.style.color='var(--red)'"
-        onmouseout="this.style.background='none';this.style.color='var(--ink3)'">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px;display:block;">
-          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-        </svg>
-      </button>
-    </div>`).join('')}</div>`
+      <!-- EXPANDED DETAIL — hidden by default -->
+      <div id="rdetail-${r.id}" style="display:none;border-top:1px solid var(--border);padding:0 16px 14px;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:12px;">
+          <thead><tr>
+            <th style="text-align:left;padding:0 6px 8px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Item</th>
+            <th style="text-align:right;padding:0 6px 8px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Unit price</th>
+            <th style="text-align:center;padding:0 6px 8px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Qty</th>
+            <th style="text-align:left;padding:0 6px 8px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Category</th>
+            <th style="padding:0 0 8px;border-bottom:1px solid var(--border);width:24px;"></th>
+          </tr></thead>
+          <tbody id="ritems-${r.id}">
+            ${items.map(i=>{
+              const catOpts=getCategories().map(c=>`<option value="${c}"${c===i.category?' selected':''}>${c}</option>`).join('')
+              return`<tr id="ritem-${i.id}">
+                <td style="padding:6px;border-bottom:1px solid rgba(26,24,20,0.06);">${esc(i.name)}</td>
+                <td style="padding:6px;border-bottom:1px solid rgba(26,24,20,0.06);text-align:right;font-family:var(--font-mono);">R ${Number(i.price).toFixed(2)}</td>
+                <td style="padding:6px;border-bottom:1px solid rgba(26,24,20,0.06);text-align:center;">${i.quantity||1}</td>
+                <td style="padding:6px;border-bottom:1px solid rgba(26,24,20,0.06);">
+                  <select onchange="updateItemCategory('${i.id}','${r.id}',this.value)" style="padding:3px 6px;font-size:11px;background:var(--bg);">${catOpts}</select>
+                </td>
+                <td style="padding:6px;border-bottom:1px solid rgba(26,24,20,0.06);">
+                </td>
+              </tr>`
+            }).join('')}
+          </tbody>
+        </table>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-ghost btn-sm" onclick="editReceiptInScanner('${r.id}')" style="flex:1;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit full receipt
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="confirmDeleteReceipt('${r.id}','${esc(r.stores?.name||'Unknown')}','${r.receipt_date}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:13px;height:13px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            Delete receipt
+          </button>
+        </div>
+      </div>
+    </div>`
+  }).join('')}</div>`
 }
 
-window.loadReceipt = async(id)=>{
-  const {data:r}=await supabase.from('receipts').select('*,stores(name)').eq('id',id).single()
-  const {data:items}=await supabase.from('receipt_items').select('*').eq('receipt_id',id)
-  if(!r)return
-  document.getElementById('f-store').value=r.stores?.name||''
-  document.getElementById('f-date').value=r.receipt_date
-  document.getElementById('items-tbody').innerHTML=''
-  items?.forEach(i=>addItemRow(i.name,Number(i.price).toFixed(2),i.category,i.quantity||1))
-  updateTotal();showPage('scanner')
-  showToast('Loaded — edit and re-save to create a new entry')
+window.toggleReceiptExpand = (id) => {
+  const detail = document.getElementById('rdetail-'+id)
+  const card = document.getElementById('rcard-'+id)
+  const isOpen = detail.style.display !== 'none'
+  detail.style.display = isOpen ? 'none' : 'block'
+  card.style.borderColor = isOpen ? 'var(--border)' : 'var(--accent)'
 }
+
+window.updateItemCategory = async (itemId, receiptId, newCat) => {
+  const {error} = await supabase.from('receipt_items').update({category: newCat}).eq('id', itemId)
+  if(error){ showToast('Could not update category'); return }
+  showToast('Category updated to "'+newCat+'"')
+  // Refresh the category badges on this card without full reload
+  const {data:items} = await supabase.from('receipt_items').select('category').eq('receipt_id', receiptId)
+  const colors = getCatColors()
+  const cats = [...new Set(items?.map(i=>i.category).filter(Boolean)||[])]
+  const header = document.querySelector('#rcard-'+receiptId+' [onclick^="toggleReceiptExpand"]')
+  if(header) {
+    const badgeWrap = header.querySelectorAll('div')[1]
+    if(badgeWrap) badgeWrap.innerHTML = cats.map(c=>`<span style="display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;background:${colors[c]||'#888'}22;color:${colors[c]||'#888'};border:1px solid ${colors[c]||'#888'}44;">${esc(c)}</span>`).join(' ')
+  }
+}
+
+window.editReceiptInScanner = async (id) => {
+  const {data:r} = await supabase.from('receipts').select('*,stores(name)').eq('id',id).single()
+  const {data:items} = await supabase.from('receipt_items').select('*').eq('receipt_id',id)
+  if(!r) return
+  document.getElementById('f-store').value = r.stores?.name||''
+  document.getElementById('f-date').value = r.receipt_date
+  document.getElementById('items-tbody').innerHTML = ''
+  items?.forEach(i=>addItemRow(i.name, Number(i.price).toFixed(2), i.category, i.quantity||1))
+  updateTotal(); showPage('scanner')
+  showToast('Loaded for editing — save to create a new entry')
+}
+
+// loadReceipt replaced by editReceiptInScanner above
 
 // ── DELETE RECEIPT ───────────────────────────────────────────
 window.confirmDeleteReceipt = (id, store, date) => {
