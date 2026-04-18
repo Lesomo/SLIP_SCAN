@@ -30,7 +30,7 @@
   .auth-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:40px 36px;width:100%;max-width:400px;}
   .auth-logo{font-family:var(--font-display);font-size:28px;font-weight:600;margin-bottom:4px;}
   .auth-sub{font-size:13px;color:var(--ink2);margin-bottom:28px;}
-  .auth-tabs{display:flex;gap:0;margin-bottom:24px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;}
+  .auth-tabs{display:flex;margin-bottom:24px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;}
   .auth-tab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;background:transparent;border:none;color:var(--ink2);font-family:var(--font-body);}
   .auth-tab.active{background:var(--accent);color:#fff;}
   .auth-error{background:var(--red-light);color:var(--red);padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;margin-bottom:16px;display:none;}
@@ -56,18 +56,9 @@
   .page-header h2{font-family:var(--font-display);font-size:28px;font-weight:300;letter-spacing:-0.5px;}
   .page-header p{color:var(--ink2);margin-top:4px;font-size:13px;}
 
-  /* SCANNER */
-  .scanner-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+  /* CARDS & BUTTONS */
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
   .card-title{font-size:11px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
-  .upload-zone{border:1.5px dashed var(--border);border-radius:var(--radius);padding:32px 20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg);position:relative;}
-  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--accent-light);}
-  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-  .upload-icon{width:48px;height:48px;background:var(--surface2);border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;}
-  .upload-icon svg{width:22px;height:22px;color:var(--ink2);}
-  .upload-zone h3{font-size:14px;font-weight:500;margin-bottom:4px;}
-  .upload-zone p{font-size:12px;color:var(--ink3);}
-  .upload-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;font-family:var(--font-body);}
   .btn svg{width:15px;height:15px;flex-shrink:0;}
   .btn-primary{background:var(--accent);color:#fff;}
@@ -78,6 +69,19 @@
   .btn-ghost{background:transparent;color:var(--ink2);border:1px solid var(--border);}
   .btn-ghost:hover{background:var(--surface2);color:var(--ink);}
   .btn-sm{padding:6px 10px;font-size:12px;}
+  .btn-danger{background:var(--red-light);color:var(--red);border:1px solid rgba(179,58,42,0.15);}
+  .divider{height:1px;background:var(--border);margin:16px 0;}
+
+  /* SCANNER */
+  .scanner-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+  .upload-zone{border:1.5px dashed var(--border);border-radius:var(--radius);padding:24px 16px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg);position:relative;}
+  .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--accent-light);}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-icon{width:40px;height:40px;background:var(--surface2);border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;}
+  .upload-icon svg{width:20px;height:20px;color:var(--ink2);}
+  .upload-zone h3{font-size:14px;font-weight:500;margin-bottom:4px;}
+  .upload-zone p{font-size:12px;color:var(--ink3);}
+  .upload-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
   .img-previews{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
   .img-preview-wrap{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;}
   .img-preview-wrap img{width:100%;height:100%;object-fit:cover;}
@@ -85,28 +89,38 @@
   .img-preview-add{width:72px;height:72px;border:1.5px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink3);transition:all 0.15s;position:relative;flex-shrink:0;}
   .img-preview-add:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
   .img-preview-add input{position:absolute;inset:0;opacity:0;cursor:pointer;}
-  .img-preview-add svg{width:20px;height:20px;}
   .ocr-status{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--radius-sm);font-size:12px;margin-top:12px;}
   .ocr-status.processing{background:var(--amber-light);color:var(--amber);}
   .ocr-status.done{background:var(--accent-light);color:var(--accent);}
   .ocr-status.error{background:var(--red-light);color:var(--red);}
   .spinner{width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
   @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* FORM */
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
   .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
   label{font-size:11px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:0.5px;text-transform:uppercase;}
   input,select,textarea{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;color:var(--ink);font-family:var(--font-body);transition:border-color 0.15s;width:100%;}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);}
-  .items-table{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:13px;}
-  .items-table th{font-size:10px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:0.5px;text-transform:uppercase;padding:0 8px 8px;text-align:left;border-bottom:1px solid var(--border);}
-  .items-table td{padding:6px 8px;border-bottom:1px solid rgba(26,24,20,0.06);vertical-align:middle;}
+
+  /* ITEMS TABLE */
+  .items-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .items-table th{font-size:10px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:0.5px;text-transform:uppercase;padding:0 6px 8px;text-align:left;border-bottom:1px solid var(--border);}
+  .items-table td{padding:5px 6px;border-bottom:1px solid rgba(26,24,20,0.06);vertical-align:middle;}
   .items-table tr:last-child td{border-bottom:none;}
-  .items-table input,.items-table select{padding:5px 8px;font-size:12px;}
+  .items-table input,.items-table select{padding:5px 7px;font-size:12px;}
   .item-remove{background:none;border:none;cursor:pointer;color:var(--ink3);padding:4px;border-radius:4px;display:flex;align-items:center;}
   .item-remove:hover{color:var(--red);background:var(--red-light);}
   .item-remove svg{width:13px;height:13px;}
+  .line-total{font-family:var(--font-mono);font-size:12px;color:var(--ink2);}
   .total-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;border-top:1px solid var(--border);font-weight:500;font-size:14px;margin-top:4px;}
   .total-amount{font-family:var(--font-mono);font-size:16px;color:var(--accent);}
+
+  /* SMART MATCH BADGE */
+  .match-badge{display:inline-flex;align-items:center;gap:4px;background:var(--blue-light);color:var(--blue);font-size:10px;padding:2px 7px;border-radius:10px;cursor:pointer;white-space:nowrap;}
+  .match-badge:hover{background:#c5d8f4;}
+
+  /* CATEGORY BADGES */
   .cat-badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;}
   .cat-Groceries{background:var(--accent-light);color:var(--accent);}
   .cat-Produce{background:var(--teal-light);color:var(--teal);}
@@ -114,12 +128,16 @@
   .cat-Personal{background:#F0EBF8;color:#5B3A8C;}
   .cat-Beverages{background:var(--amber-light);color:var(--amber);}
   .cat-Other{background:var(--surface2);color:var(--ink2);}
-  .receipts-list{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+
+  /* RECEIPTS LIST */
+  .receipts-list{display:flex;flex-direction:column;gap:10px;}
   .receipt-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.15s;}
   .receipt-row:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(43,95,62,0.08);}
   .receipt-store{font-weight:500;font-size:14px;min-width:120px;}
   .receipt-meta{flex:1;font-size:12px;color:var(--ink2);}
   .receipt-amount{font-family:var(--font-mono);font-size:15px;font-weight:500;}
+
+  /* DASHBOARD */
   .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
   .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
   .metric-label{font-size:10px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;}
@@ -132,11 +150,60 @@
   .store-bar-bg{background:var(--surface2);border-radius:3px;height:7px;overflow:hidden;}
   .store-bar-fill{height:100%;border-radius:3px;background:var(--accent);transition:width 0.6s ease;}
   .store-amt{font-family:var(--font-mono);font-size:12px;color:var(--ink2);text-align:right;}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px;font-size:11px;}
+  .legend-item{display:flex;align-items:center;gap:5px;color:var(--ink2);}
+  .legend-dot{width:9px;height:9px;border-radius:2px;}
+
+  /* BUDGET ALERTS */
+  .budget-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:24px;}
+  .budget-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+  .budget-card.warning{border-color:rgba(196,130,42,0.4);background:#FFFDF7;}
+  .budget-card.over{border-color:rgba(179,58,42,0.4);background:#FFF8F7;}
+  .budget-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .budget-cat{font-size:13px;font-weight:500;}
+  .budget-amounts{font-size:12px;color:var(--ink2);font-family:var(--font-mono);}
+  .budget-bar-bg{background:var(--surface2);border-radius:4px;height:8px;overflow:hidden;margin-bottom:6px;}
+  .budget-bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease;}
+  .budget-bar-fill.ok{background:var(--accent);}
+  .budget-bar-fill.warning{background:var(--amber);}
+  .budget-bar-fill.over{background:var(--red);}
+  .budget-status{font-size:11px;display:flex;justify-content:space-between;align-items:center;}
+  .budget-pct{font-family:var(--font-mono);font-weight:500;}
+  .budget-edit{background:none;border:none;cursor:pointer;font-size:11px;color:var(--ink3);font-family:var(--font-body);padding:0;text-decoration:underline;}
+  .budget-edit:hover{color:var(--accent);}
+
+  /* RECURRING SPEND */
+  .recurring-list{display:flex;flex-direction:column;gap:8px;}
+  .recurring-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;display:flex;align-items:center;gap:12px;}
+  .recurring-icon{width:32px;height:32px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .recurring-icon svg{width:15px;height:15px;color:var(--accent);}
+  .recurring-info{flex:1;}
+  .recurring-name{font-size:13px;font-weight:500;}
+  .recurring-meta{font-size:11px;color:var(--ink2);margin-top:2px;}
+  .recurring-price{text-align:right;}
+  .recurring-current{font-family:var(--font-mono);font-size:14px;font-weight:500;}
+  .recurring-change{font-size:11px;margin-top:2px;}
+
+  /* PRICE TRACKER */
   .price-tracker-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
   .filter-chip{padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--ink2);transition:all 0.15s;}
   .filter-chip.active,.filter-chip:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  /* BASKET COMPARISON MODAL */
+  .basket-modal-inner{max-width:560px;}
+  .basket-item-row{display:grid;grid-template-columns:1fr repeat(3,80px);gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(26,24,20,0.06);font-size:12px;}
+  .basket-item-row:last-child{border-bottom:none;}
+  .basket-header-row{display:grid;grid-template-columns:1fr repeat(3,80px);gap:8px;padding:0 0 8px;border-bottom:1px solid var(--border);}
+  .basket-cell{text-align:right;font-family:var(--font-mono);}
+  .basket-cell.best{color:var(--accent);font-weight:500;}
+  .basket-cell.worst{color:var(--red);}
+  .basket-cell.current{color:var(--ink2);}
+  .basket-cell.na{color:var(--ink3);}
+  .saving-badge{display:inline-flex;align-items:center;gap:5px;background:var(--accent-light);color:var(--accent);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;}
+
+  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(26,24,20,0.6);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
-  .modal{background:var(--surface);border-radius:var(--radius);padding:24px;width:100%;max-width:480px;border:1px solid var(--border);}
+  .modal{background:var(--surface);border-radius:var(--radius);padding:24px;width:100%;max-width:480px;border:1px solid var(--border);max-height:90vh;overflow-y:auto;}
   .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
   .modal-title{font-family:var(--font-display);font-size:18px;font-weight:300;}
   .modal-close{background:none;border:none;cursor:pointer;color:var(--ink2);padding:4px;border-radius:6px;}
@@ -147,92 +214,58 @@
   .shutter-btn{width:56px;height:56px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 2px var(--accent);cursor:pointer;transition:transform 0.1s;}
   .shutter-btn:active{transform:scale(0.93);}
   .shot-counter{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2);font-family:var(--font-mono);margin-top:10px;justify-content:center;}
+
+  /* MISC */
   .empty-state{text-align:center;padding:48px 20px;color:var(--ink2);}
   .empty-state svg{width:40px;height:40px;margin:0 auto 12px;opacity:0.3;display:block;}
   .empty-state h3{font-size:15px;font-weight:500;margin-bottom:4px;color:var(--ink);}
-  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px;font-size:11px;}
-  .legend-item{display:flex;align-items:center;gap:5px;color:var(--ink2);}
-  .legend-dot{width:9px;height:9px;border-radius:2px;}
-  .divider{height:1px;background:var(--border);margin:16px 0;}
-  .toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;z-index:200;transform:translateY(80px);transition:transform 0.3s ease;max-width:280px;}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;z-index:200;transform:translateY(80px);transition:transform 0.3s ease;max-width:300px;}
   .toast.show{transform:translateY(0);}
-  .saving-overlay{position:fixed;inset:0;background:rgba(245,242,236,0.7);z-index:150;display:flex;align-items:center;justify-content:center;display:none;}
+  .saving-overlay{position:fixed;inset:0;background:rgba(245,242,236,0.7);z-index:150;align-items:center;justify-content:center;display:none;}
   .saving-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px 32px;display:flex;align-items:center;gap:14px;font-size:14px;}
-  /* BOTTOM NAV (mobile) */
+  .info-box{background:var(--blue-light);color:var(--blue);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;margin-bottom:14px;}
+
+  /* BOTTOM NAV */
   .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:90;padding-bottom:env(safe-area-inset-bottom);}
-  .bottom-nav-inner{display:grid;grid-template-columns:repeat(4,1fr);height:62px;}
+  .bottom-nav-inner{display:grid;grid-template-columns:repeat(5,1fr);height:62px;}
   .bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:none;background:none;color:var(--ink3);font-size:11px;font-family:var(--font-body);font-weight:500;cursor:pointer;padding:8px 4px 6px;transition:color 0.15s;width:100%;}
-  .bnav-item svg{width:22px;height:22px;flex-shrink:0;}
-  .bnav-item span{font-size:11px;letter-spacing:0.1px;white-space:nowrap;}
+  .bnav-item svg{width:20px;height:20px;flex-shrink:0;}
+  .bnav-item span{font-size:10px;white-space:nowrap;}
   .bnav-item.active{color:var(--accent);}
 
   @media(max-width:768px){
     .app-shell{grid-template-columns:1fr;}
     .sidebar{display:none;}
     .bottom-nav{display:block;}
-
-    /* pages get bottom padding so content clears the nav bar */
-    .page{padding:20px 16px 84px;}
+    .page{padding:20px 16px 88px;}
     .page-header{margin-bottom:18px;}
     .page-header h2{font-size:24px;}
-    .page-header p{font-size:12px;}
-
-    /* scanner stacks vertically */
     .scanner-layout{grid-template-columns:1fr;}
-
-    /* upload zone more compact on mobile */
-    .upload-zone{padding:24px 16px;}
-    .upload-icon{width:40px;height:40px;margin-bottom:8px;}
-    .upload-actions{grid-template-columns:1fr;gap:8px;margin-top:12px;}
-
-    /* dashboard metrics: 2 columns */
+    .upload-actions{grid-template-columns:1fr;}
     .metrics-grid{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
     .metric-card{padding:12px;}
     .metric-value{font-size:20px;}
-    .metric-label{font-size:9px;}
-
-    /* charts stack */
     .charts-grid{grid-template-columns:1fr;gap:12px;margin-bottom:12px;}
     .chart-wrap{height:190px;}
-
-    /* store bars */
     .store-bar-row{grid-template-columns:72px 1fr 54px;}
-
-    /* price tracker */
-    .price-tracker-filters{gap:6px;}
-    .filter-chip{font-size:11px;padding:4px 10px;}
-
-    /* receipts list */
     .receipt-row{flex-wrap:wrap;gap:6px;padding:12px;}
-    .receipt-store{min-width:unset;width:100%;font-size:15px;}
-    .receipt-meta{font-size:11px;}
-
-    /* auth card */
+    .receipt-store{min-width:unset;width:100%;}
     .auth-card{padding:28px 20px;}
-
-    /* modal slides up from bottom */
-    .modal{max-width:100%;border-radius:var(--radius) var(--radius) 0 0;position:fixed;bottom:0;left:0;right:0;max-height:90vh;overflow-y:auto;}
+    .modal{max-width:100%;border-radius:var(--radius) var(--radius) 0 0;position:fixed;bottom:0;left:0;right:0;max-height:92vh;}
     .modal-overlay{align-items:flex-end;padding:0;}
-
-    /* toast above bottom nav */
+    .basket-modal-inner{max-width:100%;}
+    .basket-item-row,.basket-header-row{grid-template-columns:1fr repeat(2,72px);}
     .toast{bottom:76px;left:12px;right:12px;max-width:unset;text-align:center;}
-
-    /* card padding tighter */
     .card{padding:14px;}
-
-    /* items table: hide category on mobile, show as select below name */
+    .budget-grid{grid-template-columns:1fr;}
     .col-cat{display:none;}
   }
-
-  @media(max-width:380px){
-    .metric-value{font-size:17px;}
-    .bnav-item span{font-size:10px;}
-  }
+  @media(max-width:380px){.metric-value{font-size:17px;}.bnav-item span{font-size:9px;}}
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div id="auth-screen" class="auth-wrap">
   <div class="auth-card">
     <div class="auth-logo">Slipwise</div>
@@ -242,27 +275,18 @@
       <button class="auth-tab" onclick="switchAuthTab('signup')">Create account</button>
     </div>
     <div class="auth-error" id="auth-error"></div>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
-    </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password">
-    </div>
+    <div class="form-group"><label>Email</label><input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email"></div>
+    <div class="form-group"><label>Password</label><input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password"></div>
     <button class="btn btn-primary" id="auth-btn" onclick="handleAuth()" style="width:100%;margin-top:4px;">Sign in</button>
     <p id="auth-confirm-msg" style="display:none;margin-top:14px;font-size:13px;color:var(--accent);text-align:center;">Check your email to confirm your account, then sign in.</p>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app" style="display:none;">
   <div class="app-shell">
     <nav class="sidebar">
-      <div class="logo">
-        <h1>Slipwise</h1>
-        <span>receipt tracker</span>
-      </div>
+      <div class="logo"><h1>Slipwise</h1><span>receipt tracker</span></div>
       <div class="nav-section">
         <div class="nav-label">Capture</div>
         <button class="nav-item active" onclick="showPage('scanner')">
@@ -284,6 +308,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           Price Tracker
         </button>
+        <button class="nav-item" onclick="showPage('insights')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Insights
+        </button>
       </div>
       <div class="sidebar-footer">
         <div class="user-info" id="user-email-display"></div>
@@ -295,38 +323,29 @@
 
       <!-- SCANNER PAGE -->
       <div class="page active" id="page-scanner">
-        <div class="page-header">
-          <h2>Scan a Receipt</h2>
-          <p>Upload photos or use your camera — add multiple shots for long receipts</p>
-        </div>
+        <div class="page-header"><h2>Scan a Receipt</h2><p>Upload or photograph — multiple shots for long receipts</p></div>
         <div class="scanner-layout">
           <div>
             <div class="card">
               <div class="card-title">Receipt Photos</div>
               <div class="upload-zone" id="upload-zone" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
                 <input type="file" id="file-input" accept="image/*" multiple onchange="handleFileInput(event)">
-                <div class="upload-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                </div>
-                <h3>Drop images here</h3>
-                <p>or click to browse files</p>
+                <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <h3>Drop images here</h3><p>or click to browse files</p>
               </div>
               <div class="upload-actions">
                 <button class="btn btn-secondary" onclick="document.getElementById('file-input').click()">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  Upload File
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload File
                 </button>
                 <button class="btn btn-secondary" onclick="openCamera()">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Take Photo
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Take Photo
                 </button>
               </div>
               <div class="img-previews" id="img-previews"></div>
               <div id="ocr-status" style="display:none;"></div>
               <div style="margin-top:14px;display:flex;gap:8px;">
                 <button class="btn btn-primary" onclick="runOCR()" id="ocr-btn" style="flex:1;display:none;">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:15px;height:15px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  Extract Text (OCR)
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:15px;height:15px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Extract Text (OCR)
                 </button>
                 <button class="btn btn-ghost btn-sm" onclick="clearImages()" id="clear-btn" style="display:none;">Clear</button>
               </div>
@@ -336,41 +355,31 @@
             <div class="card">
               <div class="card-title">Receipt Details</div>
               <div class="form-row">
-                <div class="form-group">
-                  <label>Store Name</label>
-                  <input type="text" id="f-store" placeholder="e.g. Checkers">
-                </div>
-                <div class="form-group">
-                  <label>Date</label>
-                  <input type="date" id="f-date">
-                </div>
+                <div class="form-group"><label>Store Name</label><input type="text" id="f-store" placeholder="e.g. Checkers"></div>
+                <div class="form-group"><label>Date</label><input type="date" id="f-date"></div>
               </div>
               <div class="divider"></div>
               <div class="card-title">Line Items</div>
+              <div style="font-size:11px;color:var(--ink3);margin-bottom:10px;">Enter <strong style="color:var(--ink2);">unit price</strong> × qty. Line total auto-calculates.</div>
               <table class="items-table">
-                <thead>
-                  <tr>
-                    <th style="width:38%">Item</th>
-                    <th style="width:20%">Price (R)</th>
-                    <th style="width:30%">Category</th>
-                    <th style="width:12%"></th>
-                  </tr>
-                </thead>
+                <thead><tr>
+                  <th style="width:30%">Item</th>
+                  <th style="width:16%">Unit price</th>
+                  <th style="width:9%">Qty</th>
+                  <th style="width:14%">Total</th>
+                  <th class="col-cat" style="width:24%">Category</th>
+                  <th style="width:7%"></th>
+                </tr></thead>
                 <tbody id="items-tbody"></tbody>
               </table>
-              <button class="btn btn-ghost btn-sm" onclick="addItemRow()" style="margin-top:4px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add item
+              <button class="btn btn-ghost btn-sm" onclick="addItemRow()" style="margin-top:6px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add item
               </button>
               <div class="divider"></div>
-              <div class="total-row">
-                <span>Total</span>
-                <span class="total-amount" id="total-display">R 0.00</span>
-              </div>
+              <div class="total-row"><span>Total</span><span class="total-amount" id="total-display">R 0.00</span></div>
               <div style="margin-top:16px;display:flex;gap:8px;">
                 <button class="btn btn-primary" onclick="saveReceipt()" id="save-btn" style="flex:1;">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:15px;height:15px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                  Save Receipt
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:15px;height:15px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save Receipt
                 </button>
                 <button class="btn btn-ghost" onclick="resetForm()">Reset</button>
               </div>
@@ -381,19 +390,23 @@
 
       <!-- RECEIPTS PAGE -->
       <div class="page" id="page-receipts">
-        <div class="page-header">
-          <h2>All Receipts</h2>
-          <p>Your receipt history, synced across devices</p>
-        </div>
+        <div class="page-header"><h2>All Receipts</h2><p>Your receipt history, synced across devices</p></div>
         <div id="receipts-list-container"></div>
       </div>
 
       <!-- DASHBOARD PAGE -->
       <div class="page" id="page-dashboard">
-        <div class="page-header">
-          <h2>Dashboard</h2>
-          <p>Spending overview across all receipts</p>
+        <div class="page-header"><h2>Dashboard</h2><p>Spending overview and budget tracking</p></div>
+
+        <!-- BUDGET ALERTS SECTION -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div style="font-size:11px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:1px;text-transform:uppercase;">Monthly Budgets</div>
+          <button class="btn btn-ghost btn-sm" onclick="openBudgetModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Set budgets
+          </button>
         </div>
+        <div class="budget-grid" id="budget-grid"></div>
+
         <div class="metrics-grid" id="dash-metrics"></div>
         <div class="charts-grid">
           <div class="card">
@@ -414,16 +427,27 @@
 
       <!-- PRICE TRACKER PAGE -->
       <div class="page" id="page-prices">
-        <div class="page-header">
-          <h2>Price Tracker</h2>
-          <p>Compare prices for the same item across stores over time</p>
-        </div>
+        <div class="page-header"><h2>Price Tracker</h2><p>Unit price history per item — your personal inflation monitor</p></div>
         <div class="price-tracker-filters" id="price-filters"></div>
         <div class="card">
           <div class="card-title" id="price-item-label">Select an item above</div>
           <div class="chart-wrap" style="height:220px;"><canvas id="price-chart" role="img" aria-label="Price comparison"></canvas></div>
         </div>
         <div id="price-table-wrap" style="margin-top:16px;"></div>
+      </div>
+
+      <!-- INSIGHTS PAGE (recurring + basket) -->
+      <div class="page" id="page-insights">
+        <div class="page-header"><h2>Insights</h2><p>Recurring items and basket comparison across stores</p></div>
+
+        <div style="font-size:11px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Items you buy regularly</div>
+        <div id="recurring-container">
+          <div style="color:var(--ink3);font-size:13px;">Loading...</div>
+        </div>
+
+        <div style="margin-top:28px;font-size:11px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Basket comparison</div>
+        <div class="info-box">Select a recent receipt below to compare what those items would have cost at your other stores, based on last known prices.</div>
+        <div id="basket-receipts-list"></div>
       </div>
 
     </main>
@@ -449,6 +473,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       <span>Prices</span>
     </button>
+    <button class="bnav-item" id="bnav-insights" onclick="showPage('insights')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Insights</span>
+    </button>
   </div>
 </nav>
 
@@ -457,24 +485,47 @@
   <div class="modal">
     <div class="modal-header">
       <span class="modal-title">Take a Photo</span>
-      <button class="modal-close" onclick="closeCamera()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <button class="modal-close" onclick="closeCamera()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <video id="camera-video" autoplay playsinline></video>
     <canvas id="capture-canvas"></canvas>
-    <div style="font-size:12px;color:var(--ink2);text-align:center;margin-top:8px;">Position the receipt clearly. Add multiple shots for long receipts.</div>
+    <div style="font-size:12px;color:var(--ink2);text-align:center;margin-top:8px;">Position receipt clearly. Multiple shots OK for long receipts.</div>
     <div class="shot-counter" id="shot-counter" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
       <span id="shot-count-text">0 photos taken</span>
     </div>
-    <div class="camera-actions">
-      <button class="shutter-btn" onclick="capturePhoto()"></button>
-    </div>
+    <div class="camera-actions"><button class="shutter-btn" onclick="capturePhoto()"></button></div>
     <div style="display:flex;gap:8px;margin-top:12px;">
       <button class="btn btn-primary" onclick="doneWithCamera()" style="flex:1;">Done — Use Photos</button>
       <button class="btn btn-ghost" onclick="closeCamera()">Cancel</button>
     </div>
+  </div>
+</div>
+
+<!-- BUDGET MODAL -->
+<div class="modal-overlay" id="budget-modal" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Set Monthly Budgets</span>
+      <button class="modal-close" onclick="closeBudgetModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;">Set a monthly spend limit per category. Leave blank for no limit.</div>
+    <div id="budget-inputs"></div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn btn-primary" onclick="saveBudgets()" style="flex:1;">Save Budgets</button>
+      <button class="btn btn-ghost" onclick="closeBudgetModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- BASKET COMPARISON MODAL -->
+<div class="modal-overlay" id="basket-modal" style="display:none;">
+  <div class="modal basket-modal-inner" style="max-width:600px;">
+    <div class="modal-header">
+      <span class="modal-title">Basket Comparison</span>
+      <button class="modal-close" onclick="closeBasketModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="basket-modal-content"></div>
   </div>
 </div>
 
@@ -491,30 +542,28 @@
 <script type="module">
 import { createClient } from '@supabase/supabase-js'
 
-// ── SUPABASE CLIENT ───────────────────────────────────────────
 const supabase = createClient(
   'https://yltbtnqtgaoujoziqpbs.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlsdGJ0bnF0Z2FvdWpvemlxcGJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNDQ3MTgsImV4cCI6MjA5MTgyMDcxOH0.4r9z1Y9lFy6GGTrxeWdhrkgjhviRk-vZyResEFtcwzA'
 )
 
-// ── CONSTANTS ─────────────────────────────────────────────────
+// ── CONSTANTS ────────────────────────────────────────────────
 const CATEGORIES = ['Groceries','Produce','Household','Personal','Beverages','Other']
 const CAT_COLORS = {Groceries:'#2B5F3E',Produce:'#1E6B6B',Household:'#2A4B8C',Personal:'#5B3A8C',Beverages:'#C4822A',Other:'#6B6760'}
 
-// ── STATE ─────────────────────────────────────────────────────
-let capturedImages = []  // {dataUrl, blob, filename}
-let cameraStream = null
-let cameraShots = 0
+// ── STATE ────────────────────────────────────────────────────
+let capturedImages = []
+let cameraStream = null, cameraShots = 0
 let chartInstances = {}
 let currentUser = null
 let selectedPriceItem = null
+let budgets = {}  // { category: amount }
 
 // ── AUTH ─────────────────────────────────────────────────────
 window.switchAuthTab = (tab) => {
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')))
-  document.getElementById('auth-btn').textContent = tab === 'login' ? 'Sign in' : 'Create account'
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='signup')))
+  document.getElementById('auth-btn').textContent = tab==='login'?'Sign in':'Create account'
   document.getElementById('auth-error').style.display = 'none'
-  document.getElementById('auth-confirm-msg').style.display = 'none'
   document.getElementById('auth-btn').dataset.mode = tab
 }
 document.getElementById('auth-btn').dataset.mode = 'login'
@@ -525,329 +574,339 @@ window.handleAuth = async () => {
   const mode = document.getElementById('auth-btn').dataset.mode
   const errEl = document.getElementById('auth-error')
   errEl.style.display = 'none'
-  if (!email || !password) { errEl.textContent = 'Please enter email and password.'; errEl.style.display = 'block'; return }
-
+  if(!email||!password){errEl.textContent='Please enter email and password.';errEl.style.display='block';return}
   const btn = document.getElementById('auth-btn')
-  btn.disabled = true; btn.textContent = '...'
-
+  btn.disabled=true; btn.textContent='...'
   let error
-  if (mode === 'signup') {
-    const res = await supabase.auth.signUp({ email, password })
+  if(mode==='signup'){
+    const res = await supabase.auth.signUp({email,password})
     error = res.error
-    if (!error) {
-      document.getElementById('auth-confirm-msg').style.display = 'block'
-      btn.disabled = false; btn.textContent = 'Create account'
-      return
-    }
+    if(!error){document.getElementById('auth-confirm-msg').style.display='block';btn.disabled=false;btn.textContent='Create account';return}
   } else {
-    const res = await supabase.auth.signInWithPassword({ email, password })
-    error = res.error
-    if (!error) { await initApp(); return }
+    const res = await supabase.auth.signInWithPassword({email,password})
+    error=res.error
+    if(!error){await initApp();return}
   }
-  errEl.textContent = error?.message || 'Something went wrong.'
-  errEl.style.display = 'block'
-  btn.disabled = false; btn.textContent = mode === 'login' ? 'Sign in' : 'Create account'
+  errEl.textContent = error?.message||'Something went wrong.'
+  errEl.style.display='block'
+  btn.disabled=false; btn.textContent=mode==='login'?'Sign in':'Create account'
 }
-
-// Allow Enter key to submit
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('auth-screen').style.display !== 'none') handleAuth()
-})
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('auth-screen').style.display!=='none')handleAuth()})
 
 window.handleSignOut = async () => {
-  await supabase.auth.signOut()
-  currentUser = null
-  document.getElementById('app').style.display = 'none'
-  document.getElementById('bottom-nav').style.display = 'none'
-  document.getElementById('auth-screen').style.display = 'flex'
+  await supabase.auth.signOut(); currentUser=null
+  document.getElementById('app').style.display='none'
+  document.getElementById('bottom-nav').style.display='none'
+  document.getElementById('auth-screen').style.display='flex'
 }
 
 async function initApp() {
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return
+  const {data:{user}} = await supabase.auth.getUser()
+  if(!user) return
   currentUser = user
-  document.getElementById('auth-screen').style.display = 'none'
-  document.getElementById('app').style.display = 'block'
-  document.getElementById('bottom-nav').style.display = 'block'
+  document.getElementById('auth-screen').style.display='none'
+  document.getElementById('app').style.display='block'
+  document.getElementById('bottom-nav').style.display='block'
   document.getElementById('user-email-display').textContent = user.email
   document.getElementById('f-date').value = new Date().toISOString().split('T')[0]
+  // Load budgets from localStorage (per user)
+  budgets = JSON.parse(localStorage.getItem('slipwise_budgets_'+user.id)||'{}')
   addItemRow()
 }
+supabase.auth.getSession().then(({data:{session}})=>{if(session)initApp()})
 
-// Check session on load
-supabase.auth.getSession().then(({ data: { session } }) => {
-  if (session) initApp()
-})
-
-// ── NAVIGATION ────────────────────────────────────────────────
+// ── NAVIGATION ───────────────────────────────────────────────
 window.showPage = (id) => {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'))
-  document.querySelectorAll('.bnav-item').forEach(n => n.classList.remove('active'))
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'))
+  document.querySelectorAll('.bnav-item').forEach(n=>n.classList.remove('active'))
   document.getElementById('page-'+id).classList.add('active')
-  const idx = ['scanner','receipts','dashboard','prices']
+  const idx = ['scanner','receipts','dashboard','prices','insights']
   document.querySelectorAll('.nav-item')[idx.indexOf(id)]?.classList.add('active')
   document.getElementById('bnav-'+id)?.classList.add('active')
   window.scrollTo(0,0)
-  if (id === 'dashboard') renderDashboard()
-  if (id === 'prices') renderPriceTracker()
-  if (id === 'receipts') renderReceiptsList()
+  if(id==='dashboard') renderDashboard()
+  if(id==='prices') renderPriceTracker()
+  if(id==='receipts') renderReceiptsList()
+  if(id==='insights') renderInsights()
 }
 
-// ── IMAGE HANDLING ────────────────────────────────────────────
-window.handleFileInput = (e) => { [...e.target.files].forEach(f => addImageFile(f)); e.target.value = '' }
-window.handleDrag = (e) => { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag-over') }
-window.handleDragLeave = () => document.getElementById('upload-zone').classList.remove('drag-over')
-window.handleDrop = (e) => { e.preventDefault(); handleDragLeave(); ;[...e.dataTransfer.files].forEach(f => { if(f.type.startsWith('image/')) addImageFile(f) }) }
+// ── IMAGE HANDLING ───────────────────────────────────────────
+window.handleFileInput = (e)=>{[...e.target.files].forEach(f=>addImageFile(f));e.target.value=''}
+window.handleDrag = (e)=>{e.preventDefault();document.getElementById('upload-zone').classList.add('drag-over')}
+window.handleDragLeave = ()=>document.getElementById('upload-zone').classList.remove('drag-over')
+window.handleDrop = (e)=>{e.preventDefault();handleDragLeave();[...e.dataTransfer.files].forEach(f=>{if(f.type.startsWith('image/'))addImageFile(f)})}
 
-function addImageFile(file) {
-  const reader = new FileReader()
-  reader.onload = ev => { capturedImages.push({ dataUrl: ev.target.result, blob: file, filename: file.name }); renderPreviews() }
+function addImageFile(file){
+  const reader=new FileReader()
+  reader.onload=ev=>{capturedImages.push({dataUrl:ev.target.result,blob:file,filename:file.name});renderPreviews()}
   reader.readAsDataURL(file)
 }
-
-function addDataUrlAsImage(dataUrl) {
-  // Convert dataUrl to blob for upload
-  const arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1]
-  const bstr = atob(arr[1])
-  const u8 = new Uint8Array(bstr.length)
-  for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i)
-  const blob = new Blob([u8], {type: mime})
-  const filename = `camera-${Date.now()}.jpg`
-  capturedImages.push({ dataUrl, blob, filename })
+function addDataUrlAsImage(dataUrl){
+  const arr=dataUrl.split(','),mime=arr[0].match(/:(.*?);/)[1]
+  const bstr=atob(arr[1]),u8=new Uint8Array(bstr.length)
+  for(let i=0;i<bstr.length;i++)u8[i]=bstr.charCodeAt(i)
+  capturedImages.push({dataUrl,blob:new Blob([u8],{type:mime}),filename:`camera-${Date.now()}.jpg`})
   renderPreviews()
 }
+window.removeImage = (i)=>{capturedImages.splice(i,1);renderPreviews()}
 
-window.removeImage = (i) => { capturedImages.splice(i,1); renderPreviews() }
-
-function renderPreviews() {
-  const wrap = document.getElementById('img-previews')
-  wrap.innerHTML = ''
-  capturedImages.forEach((img,i) => {
-    const w = document.createElement('div'); w.className = 'img-preview-wrap'
-    w.innerHTML = `<img src="${img.dataUrl}"><button class="img-remove" onclick="removeImage(${i})">✕</button>`
+function renderPreviews(){
+  const wrap=document.getElementById('img-previews'); wrap.innerHTML=''
+  capturedImages.forEach((img,i)=>{
+    const w=document.createElement('div');w.className='img-preview-wrap'
+    w.innerHTML=`<img src="${img.dataUrl}"><button class="img-remove" onclick="removeImage(${i})">✕</button>`
     wrap.appendChild(w)
   })
-  if (capturedImages.length > 0) {
-    const addBtn = document.createElement('label'); addBtn.className = 'img-preview-add'
-    addBtn.innerHTML = `<input type="file" accept="image/*" onchange="handleFileInput(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`
-    wrap.appendChild(addBtn)
+  if(capturedImages.length>0){
+    const a=document.createElement('label');a.className='img-preview-add'
+    a.innerHTML=`<input type="file" accept="image/*" onchange="handleFileInput(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`
+    wrap.appendChild(a)
   }
-  const has = capturedImages.length > 0
-  document.getElementById('ocr-btn').style.display = has ? 'flex' : 'none'
-  document.getElementById('clear-btn').style.display = has ? 'flex' : 'none'
-  document.getElementById('upload-zone').style.display = has ? 'none' : ''
+  const has=capturedImages.length>0
+  document.getElementById('ocr-btn').style.display=has?'flex':'none'
+  document.getElementById('clear-btn').style.display=has?'flex':'none'
+  document.getElementById('upload-zone').style.display=has?'none':''
 }
+window.clearImages = ()=>{capturedImages=[];renderPreviews();document.getElementById('ocr-status').style.display='none';document.getElementById('upload-zone').style.display=''}
 
-window.clearImages = () => {
-  capturedImages = []; renderPreviews()
-  document.getElementById('ocr-status').style.display = 'none'
-  document.getElementById('upload-zone').style.display = ''
+// ── CAMERA ───────────────────────────────────────────────────
+window.openCamera = async()=>{
+  cameraShots=0;document.getElementById('shot-counter').style.display='none'
+  document.getElementById('camera-modal').style.display='flex'
+  try{cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});document.getElementById('camera-video').srcObject=cameraStream}
+  catch{closeCamera();showToast('Camera not available — please upload a file')}
 }
-
-// ── CAMERA ────────────────────────────────────────────────────
-window.openCamera = async () => {
-  cameraShots = 0; document.getElementById('shot-counter').style.display = 'none'
-  document.getElementById('camera-modal').style.display = 'flex'
-  try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false})
-    document.getElementById('camera-video').srcObject = cameraStream
-  } catch { closeCamera(); showToast('Camera not available — please upload a file') }
+window.capturePhoto = ()=>{
+  const v=document.getElementById('camera-video'),c=document.getElementById('capture-canvas')
+  c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0)
+  addDataUrlAsImage(c.toDataURL('image/jpeg',0.85))
+  cameraShots++;document.getElementById('shot-counter').style.display='flex'
+  document.getElementById('shot-count-text').textContent=cameraShots+' photo'+(cameraShots===1?'':'s')+' taken'
 }
+window.doneWithCamera = ()=>{closeCamera();if(capturedImages.length)showToast(capturedImages.length+' photo(s) ready — tap Extract Text')}
+window.closeCamera = ()=>{if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}document.getElementById('camera-modal').style.display='none'}
 
-window.capturePhoto = () => {
-  const video = document.getElementById('camera-video')
-  const canvas = document.getElementById('capture-canvas')
-  canvas.width = video.videoWidth; canvas.height = video.videoHeight
-  canvas.getContext('2d').drawImage(video,0,0)
-  addDataUrlAsImage(canvas.toDataURL('image/jpeg',0.85))
-  cameraShots++
-  document.getElementById('shot-counter').style.display = 'flex'
-  document.getElementById('shot-count-text').textContent = cameraShots + ' photo' + (cameraShots===1?'':'s') + ' taken'
-}
-
-window.doneWithCamera = () => { closeCamera(); if(capturedImages.length) showToast(capturedImages.length+' photo(s) ready — tap Extract Text') }
-
-window.closeCamera = () => {
-  if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}
-  document.getElementById('camera-modal').style.display = 'none'
-}
-
-// ── OCR ───────────────────────────────────────────────────────
-window.runOCR = async () => {
-  if (!capturedImages.length) return
-  setOcrStatus('processing', 'Extracting text from '+capturedImages.length+' image(s)...')
-  let allText = ''
-  for (const img of capturedImages) {
-    try {
-      const fd = new FormData()
-      fd.append('file', img.blob, img.filename)
-      fd.append('apikey', 'helloworld')
-      fd.append('isTable', 'true')
-      fd.append('OCREngine', '2')
-      const res = await fetch('https://api.ocr.space/parse/image', {method:'POST',body:fd})
-      const json = await res.json()
-      if (json.ParsedResults?.[0]?.ParsedText) allText += (allText?'\n---\n':'') + json.ParsedResults[0].ParsedText
-    } catch {}
+// ── OCR ──────────────────────────────────────────────────────
+window.runOCR = async()=>{
+  if(!capturedImages.length) return
+  setOcrStatus('processing','Extracting text from '+capturedImages.length+' image(s)...')
+  let allText=''
+  for(const img of capturedImages){
+    try{
+      const fd=new FormData()
+      fd.append('file',img.blob,img.filename);fd.append('apikey','helloworld');fd.append('isTable','true');fd.append('OCREngine','2')
+      const res=await fetch('https://api.ocr.space/parse/image',{method:'POST',body:fd})
+      const json=await res.json()
+      if(json.ParsedResults?.[0]?.ParsedText) allText+=(allText?'\n---\n':'')+json.ParsedResults[0].ParsedText
+    }catch{}
   }
-  if (allText.trim()) { setOcrStatus('done','Text extracted — review and edit below'); parseOCRText(allText) }
-  else { setOcrStatus('error','Could not extract text — please fill in manually') }
+  if(allText.trim()){setOcrStatus('done','Text extracted — review and edit below');parseOCRText(allText)}
+  else setOcrStatus('error','Could not extract text — please fill in manually')
 }
 
-function setOcrStatus(type, msg) {
-  const el = document.getElementById('ocr-status'); el.style.display = 'flex'; el.className = 'ocr-status '+type
-  el.innerHTML = type==='processing' ? `<div class="spinner"></div><span>${msg}</span>` : `<span>${type==='done'?'✓':'⚠'}</span><span>${msg}</span>`
+function setOcrStatus(type,msg){
+  const el=document.getElementById('ocr-status');el.style.display='flex';el.className='ocr-status '+type
+  el.innerHTML=type==='processing'?`<div class="spinner"></div><span>${msg}</span>`:`<span>${type==='done'?'✓':'⚠'}</span><span>${msg}</span>`
 }
 
-function parseOCRText(text) {
-  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean)
-  let store = ''; for(const l of lines){if(l.length>2&&!/^\d/.test(l)){store=l;break;}}
-  if(store) document.getElementById('f-store').value = store
-  const dm = text.match(/(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})|(\d{4}-\d{2}-\d{2})/)
+function parseOCRText(text){
+  const lines=text.split('\n').map(l=>l.trim()).filter(Boolean)
+  let store='';for(const l of lines){if(l.length>2&&!/^\d/.test(l)){store=l;break;}}
+  if(store) document.getElementById('f-store').value=store
+  const dm=text.match(/(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})|(\d{4}-\d{2}-\d{2})/)
   if(dm){try{const p=dm[0].split(/[\/-]/);let d;if(p[0].length===4)d=new Date(p[0],p[1]-1,p[2]);else d=new Date(p[2].length===2?'20'+p[2]:p[2],p[1]-1,p[0]);if(!isNaN(d))document.getElementById('f-date').value=d.toISOString().split('T')[0]}catch{}}
-  const priceRe = /R?\s*(\d+[\.,]\d{2})/
-  document.getElementById('items-tbody').innerHTML = ''
-  let found = 0
-  lines.forEach(line => {
-    const m = line.match(priceRe); if(!m) return
-    const price = parseFloat(m[1].replace(',','.'))
-    if(price<=0||price>50000) return
-    let name = line.replace(m[0],'').replace(/[-—]+$/,'').trim()
-    if(!name||name.length<2) return
-    if(/total|subtotal|change|vat|tax|cash|card/i.test(name)&&found>0) return
-    addItemRow(name,price.toFixed(2),guessCategory(name)); found++
+  const priceRe=/R?\s*(\d+[\.,]\d{2})/
+  document.getElementById('items-tbody').innerHTML=''
+  let found=0
+  lines.forEach(line=>{
+    const m=line.match(priceRe);if(!m)return
+    const price=parseFloat(m[1].replace(',','.'))
+    if(price<=0||price>50000)return
+    let name=line.replace(m[0],'').replace(/[-—]+$/,'').trim()
+    if(!name||name.length<2)return
+    if(/total|subtotal|change|vat|tax|cash|card/i.test(name)&&found>0)return
+    addItemRow(name,price.toFixed(2),guessCategory(name));found++
   })
   if(found===0) addItemRow()
   updateTotal()
-  showToast('Extracted '+found+' item(s) — please review')
+  showToast('Extracted '+found+' item(s) — review and correct if needed')
 }
 
-function guessCategory(name) {
-  name = name.toLowerCase()
-  if(/milk|egg|bread|flour|sugar|rice|pasta|chicken|beef|fish|cheese|butter|yoghurt|cereal|oil|salt|pepper|spice|sauce/.test(name)) return 'Groceries'
-  if(/apple|banana|orange|tomato|potato|onion|lettuce|spinach|fruit|veg|carrot|grape|pear|strawb/.test(name)) return 'Produce'
-  if(/soap|shampoo|toothpaste|toilet|dish|wash|clean|detergent|bleach|broom|mop|sponge/.test(name)) return 'Household'
-  if(/lotion|cream|deo|deodorant|perfume|makeup|lip|mascara|razor|tampon|pad|vitamin/.test(name)) return 'Personal'
-  if(/water|juice|cool|drink|cola|beer|wine|coffee|tea|energy/.test(name)) return 'Beverages'
-  return 'Other'
+function guessCategory(name){
+  name=name.toLowerCase()
+  if(/milk|egg|bread|flour|sugar|rice|pasta|chicken|beef|fish|cheese|butter|yoghurt|cereal|oil|salt|pepper|spice|sauce/.test(name))return'Groceries'
+  if(/apple|banana|orange|tomato|potato|onion|lettuce|spinach|fruit|veg|carrot|grape|pear|strawb/.test(name))return'Produce'
+  if(/soap|shampoo|toothpaste|toilet|dish|wash|clean|detergent|bleach|broom|mop|sponge/.test(name))return'Household'
+  if(/lotion|cream|deo|deodorant|perfume|makeup|lip|mascara|razor|tampon|pad|vitamin/.test(name))return'Personal'
+  if(/water|juice|cool|drink|cola|beer|wine|coffee|tea|energy/.test(name))return'Beverages'
+  return'Other'
 }
 
-// ── FORM ──────────────────────────────────────────────────────
-window.addItemRow = (name='', price='', cat='Groceries') => {
-  const tbody = document.getElementById('items-tbody')
-  const tr = document.createElement('tr')
-  const opts = CATEGORIES.map(c=>`<option value="${c}"${c===cat?' selected':''}>${c}</option>`).join('')
-  tr.innerHTML = `<td><input type="text" value="${esc(name)}" placeholder="Item name" oninput="updateTotal()"></td><td><input type="number" value="${price}" placeholder="0.00" step="0.01" min="0" oninput="updateTotal()"></td><td><select>${opts}</select></td><td><button class="item-remove" onclick="this.closest('tr').remove();updateTotal();" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></td>`
+// ── SMART NORMALISATION ──────────────────────────────────────
+// Fuzzy similarity: Jaro-Winkler approximation using bigram overlap
+function similarity(a, b) {
+  a=a.toLowerCase().trim(); b=b.toLowerCase().trim()
+  if(a===b) return 1
+  if(a.length<2||b.length<2) return 0
+  const bigrams = s => { const m=new Map(); for(let i=0;i<s.length-1;i++){const b=s.slice(i,i+2);m.set(b,(m.get(b)||0)+1)} return m }
+  const bA=bigrams(a), bB=bigrams(b)
+  let intersection=0
+  bA.forEach((cnt,bg)=>{ if(bB.has(bg)) intersection+=Math.min(cnt,bB.get(bg)) })
+  return(2*intersection)/(a.length+b.length-2)
+}
+
+async function findSimilarItems(name) {
+  // Get all known normalised names from recent items
+  const {data} = await supabase.from('receipt_items').select('name,name_normalised').order('created_at',{ascending:false}).limit(500)
+  if(!data?.length) return null
+  const norm = name.toLowerCase().trim()
+  const unique = [...new Map(data.map(d=>[d.name_normalised,d.name])).entries()]
+  const matches = unique
+    .filter(([n]) => n && n!==norm)
+    .map(([n,display]) => ({n, display, score:similarity(norm,n)}))
+    .filter(m => m.score > 0.6)
+    .sort((a,b) => b.score-a.score)
+  return matches[0] || null
+}
+
+// ── FORM ─────────────────────────────────────────────────────
+window.addItemRow = (name='', unitPrice='', cat='Groceries', qty=1) => {
+  const tbody=document.getElementById('items-tbody')
+  const tr=document.createElement('tr')
+  const opts=CATEGORIES.map(c=>`<option value="${c}"${c===cat?' selected':''}>${c}</option>`).join('')
+  const lt=unitPrice&&qty?(parseFloat(unitPrice)*qty).toFixed(2):''
+  tr.innerHTML=`
+    <td>
+      <input type="text" value="${esc(name)}" placeholder="Item name" oninput="onItemNameInput(this)">
+      <div class="match-hint" style="display:none;margin-top:3px;"></div>
+    </td>
+    <td><input type="number" value="${unitPrice}" placeholder="0.00" step="0.01" min="0" oninput="recalcLine(this)"></td>
+    <td><input type="number" value="${qty}" placeholder="1" step="1" min="1" style="width:50px;" oninput="recalcLine(this)"></td>
+    <td><span class="line-total">R ${lt||'0.00'}</span></td>
+    <td class="col-cat"><select>${opts}</select></td>
+    <td><button class="item-remove" onclick="this.closest('tr').remove();updateTotal();" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></td>`
   tbody.appendChild(tr); updateTotal()
 }
 
+// Debounced smart match check on item name input
+let matchTimers = new WeakMap()
+window.onItemNameInput = async (input) => {
+  updateTotal()
+  clearTimeout(matchTimers.get(input))
+  const hint = input.closest('td').querySelector('.match-hint')
+  const val = input.value.trim()
+  if(val.length < 3){ hint.style.display='none'; return }
+  matchTimers.set(input, setTimeout(async () => {
+    const match = await findSimilarItems(val)
+    if(match && match.score > 0.65) {
+      hint.style.display='block'
+      hint.innerHTML=`<span class="match-badge" onclick="applyMatch(this,'${esc(match.display)}')">
+        Similar: "${esc(match.display)}" — use this name?
+      </span>`
+    } else { hint.style.display='none' }
+  }, 600))
+}
+
+window.applyMatch = (el, matchName) => {
+  const input = el.closest('td').querySelector('input[type=text]')
+  input.value = matchName
+  el.closest('.match-hint').style.display='none'
+}
+
+window.recalcLine = (input) => {
+  const tr=input.closest('tr'),inputs=tr.querySelectorAll('input')
+  const up=parseFloat(inputs[1]?.value||0),qty=parseInt(inputs[2]?.value||1)
+  tr.querySelector('.line-total').textContent='R '+((!isNaN(up)&&!isNaN(qty))?(up*qty).toFixed(2):'0.00')
+  updateTotal()
+}
+
 window.updateTotal = () => {
-  let t = 0
-  document.querySelectorAll('#items-tbody tr').forEach(tr => { const v=parseFloat(tr.querySelectorAll('input')[1]?.value||0); if(!isNaN(v))t+=v })
-  document.getElementById('total-display').textContent = 'R '+t.toFixed(2)
+  let t=0
+  document.querySelectorAll('#items-tbody tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input')
+    const up=parseFloat(inputs[1]?.value||0),qty=parseInt(inputs[2]?.value||1)
+    if(!isNaN(up)&&!isNaN(qty))t+=up*qty
+  })
+  document.getElementById('total-display').textContent='R '+t.toFixed(2)
 }
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
 window.resetForm = () => {
-  document.getElementById('f-store').value = ''
-  document.getElementById('f-date').value = new Date().toISOString().split('T')[0]
-  document.getElementById('items-tbody').innerHTML = ''
-  addItemRow(); updateTotal(); clearImages()
-  document.getElementById('ocr-status').style.display = 'none'
+  document.getElementById('f-store').value=''
+  document.getElementById('f-date').value=new Date().toISOString().split('T')[0]
+  document.getElementById('items-tbody').innerHTML=''
+  addItemRow();updateTotal();clearImages()
+  document.getElementById('ocr-status').style.display='none'
 }
 
-// ── SAVE RECEIPT TO SUPABASE ──────────────────────────────────
+// ── SAVE ─────────────────────────────────────────────────────
 window.saveReceipt = async () => {
-  const store = document.getElementById('f-store').value.trim()
-  const date = document.getElementById('f-date').value
+  const store=document.getElementById('f-store').value.trim()
+  const date=document.getElementById('f-date').value
   if(!store){showToast('Please enter a store name');return}
   if(!date){showToast('Please enter a date');return}
 
-  const items = []
-  document.querySelectorAll('#items-tbody tr').forEach(tr => {
-    const inputs = tr.querySelectorAll('input')
-    const name = inputs[0]?.value.trim()
-    const price = parseFloat(inputs[1]?.value||0)
-    const cat = tr.querySelector('select')?.value||'Other'
-    if(name&&!isNaN(price)&&price>0) items.push({name,price,category:cat,quantity:1})
+  const items=[]
+  document.querySelectorAll('#items-tbody tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input')
+    const name=inputs[0]?.value.trim()
+    const unitPrice=parseFloat(inputs[1]?.value||0)
+    const qty=parseInt(inputs[2]?.value||1)
+    const cat=tr.querySelector('select')?.value||'Other'
+    if(name&&!isNaN(unitPrice)&&unitPrice>0) items.push({name,price:unitPrice,category:cat,quantity:qty||1})
   })
   if(!items.length){showToast('Please add at least one item');return}
 
-  const btn = document.getElementById('save-btn')
-  btn.disabled = true
+  document.getElementById('save-btn').disabled=true
   showSaving('Saving receipt...')
 
   try {
     // 1. Upsert store
     let storeId
-    const {data:existingStore} = await supabase.from('stores').select('id').ilike('name',store).maybeSingle()
-    if(existingStore){
-      storeId = existingStore.id
-    } else {
-      const {data:newStore,error:storeErr} = await supabase.from('stores').insert({name:store}).select('id').single()
-      if(storeErr) throw storeErr
-      storeId = newStore.id
-    }
+    const {data:es}=await supabase.from('stores').select('id').ilike('name',store).maybeSingle()
+    if(es){storeId=es.id}else{const {data:ns,error:se}=await supabase.from('stores').insert({name:store}).select('id').single();if(se)throw se;storeId=ns.id}
 
     // 2. Upload images
     showSaving('Uploading images...')
-    const imageUrls = []
+    const imageUrls=[]
     for(const img of capturedImages){
-      const path = `${currentUser.id}/${Date.now()}-${img.filename}`
-      const {error:upErr} = await supabase.storage.from('receipt-images').upload(path, img.blob, {contentType:'image/jpeg',upsert:false})
-      if(!upErr){
-        const {data:{publicUrl}} = supabase.storage.from('receipt-images').getPublicUrl(path)
-        imageUrls.push(publicUrl)
-      }
+      const path=`${currentUser.id}/${Date.now()}-${img.filename}`
+      const {error:ue}=await supabase.storage.from('receipt-images').upload(path,img.blob,{contentType:'image/jpeg',upsert:false})
+      if(!ue){const {data:{publicUrl}}=supabase.storage.from('receipt-images').getPublicUrl(path);imageUrls.push(publicUrl)}
     }
 
     // 3. Insert receipt
     showSaving('Saving receipt...')
-    const {data:receipt,error:rErr} = await supabase.from('receipts').insert({
-      user_id: currentUser.id,
-      store_id: storeId,
-      receipt_date: date,
-      currency: 'ZAR',
-      image_urls: imageUrls,
-    }).select('id').single()
-    if(rErr) throw rErr
+    const {data:receipt,error:re}=await supabase.from('receipts').insert({user_id:currentUser.id,store_id:storeId,receipt_date:date,currency:'ZAR',image_urls:imageUrls}).select('id').single()
+    if(re) throw re
 
     // 4. Insert items
     showSaving('Saving items...')
-    const {error:iErr} = await supabase.from('receipt_items').insert(
-      items.map(i=>({receipt_id:receipt.id,...i}))
-    )
-    if(iErr) throw iErr
+    const {error:ie}=await supabase.from('receipt_items').insert(items.map(i=>({receipt_id:receipt.id,...i})))
+    if(ie) throw ie
 
     hideSaving()
-    showToast('Receipt saved to Slipwise!')
+    showToast('Receipt saved!')
     resetForm()
+    // Check budget alerts after save
+    checkBudgetAlerts()
 
-  } catch(err) {
-    hideSaving()
-    showToast('Error: '+err.message)
-    console.error(err)
-  }
-  btn.disabled = false
+  } catch(err){hideSaving();showToast('Error: '+err.message);console.error(err)}
+  document.getElementById('save-btn').disabled=false
 }
 
-function showSaving(msg){
-  document.getElementById('saving-msg').textContent = msg
-  document.getElementById('saving-overlay').style.display = 'flex'
-}
-function hideSaving(){document.getElementById('saving-overlay').style.display = 'none'}
+function showSaving(m){document.getElementById('saving-msg').textContent=m;document.getElementById('saving-overlay').style.display='flex'}
+function hideSaving(){document.getElementById('saving-overlay').style.display='none'}
 
-// ── RECEIPTS LIST ─────────────────────────────────────────────
-async function renderReceiptsList() {
-  const wrap = document.getElementById('receipts-list-container')
-  wrap.innerHTML = `<div style="color:var(--ink3);font-size:13px;padding:20px 0;">Loading...</div>`
-  const {data,error} = await supabase.from('receipts').select('id,receipt_date,total_amount,currency,stores(name)').order('receipt_date',{ascending:false}).limit(100)
-  if(error||!data?.length){
-    wrap.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>No receipts yet</h3><p>Scan your first receipt to get started</p></div>`
-    return
-  }
-  wrap.innerHTML = `<div class="receipts-list">${data.map(r=>`
+// ── RECEIPTS LIST ────────────────────────────────────────────
+async function renderReceiptsList(){
+  const wrap=document.getElementById('receipts-list-container')
+  wrap.innerHTML=`<div style="color:var(--ink3);font-size:13px;padding:20px 0;">Loading...</div>`
+  const {data,error}=await supabase.from('receipts').select('id,receipt_date,total_amount,stores(name)').order('receipt_date',{ascending:false}).limit(100)
+  if(error||!data?.length){wrap.innerHTML=`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>No receipts yet</h3><p>Scan your first receipt to get started</p></div>`;return}
+  wrap.innerHTML=`<div class="receipts-list">${data.map(r=>`
     <div class="receipt-row" onclick="loadReceipt('${r.id}')">
       <div class="receipt-store">${esc(r.stores?.name||'Unknown')}</div>
       <div class="receipt-meta">${fmtDate(r.receipt_date)}</div>
@@ -855,71 +914,168 @@ async function renderReceiptsList() {
     </div>`).join('')}</div>`
 }
 
-window.loadReceipt = async (id) => {
-  const {data:receipt} = await supabase.from('receipts').select('*,stores(name)').eq('id',id).single()
-  const {data:items} = await supabase.from('receipt_items').select('*').eq('receipt_id',id)
-  if(!receipt) return
-  document.getElementById('f-store').value = receipt.stores?.name || ''
-  document.getElementById('f-date').value = receipt.receipt_date
-  document.getElementById('items-tbody').innerHTML = ''
-  items?.forEach(i => addItemRow(i.name, Number(i.price).toFixed(2), i.category))
-  updateTotal(); showPage('scanner')
+window.loadReceipt = async(id)=>{
+  const {data:r}=await supabase.from('receipts').select('*,stores(name)').eq('id',id).single()
+  const {data:items}=await supabase.from('receipt_items').select('*').eq('receipt_id',id)
+  if(!r)return
+  document.getElementById('f-store').value=r.stores?.name||''
+  document.getElementById('f-date').value=r.receipt_date
+  document.getElementById('items-tbody').innerHTML=''
+  items?.forEach(i=>addItemRow(i.name,Number(i.price).toFixed(2),i.category,i.quantity||1))
+  updateTotal();showPage('scanner')
   showToast('Loaded — edit and re-save to create a new entry')
 }
 
-// ── DASHBOARD ─────────────────────────────────────────────────
-async function renderDashboard() {
-  document.getElementById('dash-metrics').innerHTML = `<div style="color:var(--ink3);font-size:13px;grid-column:1/-1;padding:12px 0;">Loading...</div>`
+// ── BUDGET ALERTS ────────────────────────────────────────────
+window.openBudgetModal = () => {
+  const inp = document.getElementById('budget-inputs')
+  inp.innerHTML = CATEGORIES.map(cat=>`
+    <div class="form-group">
+      <label>${cat}</label>
+      <div style="position:relative;">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:13px;">R</span>
+        <input type="number" id="budget-${cat}" value="${budgets[cat]||''}" placeholder="No limit" min="0" step="100" style="padding-left:28px;">
+      </div>
+    </div>`).join('')
+  document.getElementById('budget-modal').style.display='flex'
+}
+window.closeBudgetModal = ()=>document.getElementById('budget-modal').style.display='none'
 
-  const {data:receipts} = await supabase.from('receipts').select('id,receipt_date,total_amount,stores(name)')
-  const {data:items} = await supabase.from('receipt_items').select('category,price,quantity,receipt_id')
+window.saveBudgets = () => {
+  CATEGORIES.forEach(cat=>{
+    const val=parseFloat(document.getElementById('budget-'+cat)?.value)
+    if(!isNaN(val)&&val>0) budgets[cat]=val
+    else delete budgets[cat]
+  })
+  localStorage.setItem('slipwise_budgets_'+currentUser.id,JSON.stringify(budgets))
+  closeBudgetModal()
+  showToast('Budgets saved')
+  renderDashboard()
+}
 
-  if(!receipts?.length){ document.getElementById('dash-metrics').innerHTML = `<div style="color:var(--ink3);font-size:13px;grid-column:1/-1;">No data yet — scan some receipts first.</div>`; return }
-
-  const total = receipts.reduce((s,r)=>s+Number(r.total_amount),0)
-  const stores = new Set(receipts.map(r=>r.stores?.name)).size
+async function renderBudgetGrid(catTotals) {
+  const grid = document.getElementById('budget-grid')
   const now = new Date()
-  const thisMonth = receipts.filter(r=>{const d=new Date(r.receipt_date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()})
-  const monthTotal = thisMonth.reduce((s,r)=>s+Number(r.total_amount),0)
+  const daysInMonth = new Date(now.getFullYear(),now.getMonth()+1,0).getDate()
+  const dayOfMonth = now.getDate()
+  const monthProgress = dayOfMonth/daysInMonth
 
-  const catTotals = {}
+  const cats = CATEGORIES.filter(c=>budgets[c]||catTotals[c])
+  if(!cats.length){
+    grid.innerHTML=`<div style="color:var(--ink3);font-size:13px;padding:8px 0 16px;">No budgets set yet — <button class="budget-edit" onclick="openBudgetModal()">set monthly budgets</button> to track your spending limits.</div>`
+    return
+  }
+
+  grid.innerHTML = cats.map(cat=>{
+    const spent=catTotals[cat]||0
+    const budget=budgets[cat]
+    if(!budget){
+      return`<div class="budget-card"><div class="budget-header"><span class="budget-cat">${cat}</span><span class="budget-amounts">R ${spent.toFixed(0)} spent</span></div><div style="font-size:11px;color:var(--ink3);">No budget set — <button class="budget-edit" onclick="openBudgetModal()">set one</button></div></div>`
+    }
+    const pct=Math.min((spent/budget)*100,100)
+    const status=pct>=100?'over':pct>=80?'warning':'ok'
+    const statusLabel=pct>=100?`R ${(spent-budget).toFixed(0)} over budget`:pct>=80?`R ${(budget-spent).toFixed(0)} left — almost there`:`R ${(budget-spent).toFixed(0)} remaining`
+    const projectedSpend = monthProgress>0?(spent/monthProgress):0
+    const projectionNote = projectedSpend>budget?`<span style="color:var(--red);font-size:10px;">On track to overspend by R${(projectedSpend-budget).toFixed(0)}</span>`:''
+    return`<div class="budget-card ${status}">
+      <div class="budget-header">
+        <span class="budget-cat">${cat}</span>
+        <span class="budget-amounts">R ${spent.toFixed(0)} / R ${budget.toFixed(0)}</span>
+      </div>
+      <div class="budget-bar-bg"><div class="budget-bar-fill ${status}" style="width:${pct.toFixed(1)}%"></div></div>
+      <div class="budget-status">
+        <span style="font-size:11px;color:${status==='over'?'var(--red)':status==='warning'?'var(--amber)':'var(--ink2)'};">${statusLabel}</span>
+        <span class="budget-pct" style="color:${status==='over'?'var(--red)':status==='warning'?'var(--amber)':'var(--ink2)'};">${pct.toFixed(0)}%</span>
+      </div>
+      ${projectionNote?`<div style="margin-top:4px;">${projectionNote}</div>`:''}
+    </div>`
+  }).join('')
+}
+
+async function checkBudgetAlerts() {
+  if(!Object.keys(budgets).length) return
+  const now=new Date()
+  const monthStart=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-01`
+  const {data:items}=await supabase.from('receipt_items').select('category,price,quantity,receipts!inner(receipt_date,user_id)').gte('receipts.receipt_date',monthStart)
+  const catTotals={}
   items?.forEach(i=>{catTotals[i.category]=(catTotals[i.category]||0)+(Number(i.price)*i.quantity)})
-  const topCat = Object.entries(catTotals).sort((a,b)=>b[1]-a[1])[0]
+  CATEGORIES.forEach(cat=>{
+    if(budgets[cat]&&catTotals[cat]){
+      const pct=(catTotals[cat]/budgets[cat])*100
+      if(pct>=100) showToast(`⚠ ${cat} budget exceeded! Spent R${catTotals[cat].toFixed(0)} of R${budgets[cat]}`)
+      else if(pct>=80) showToast(`${cat} at ${pct.toFixed(0)}% of monthly budget`)
+    }
+  })
+}
 
-  document.getElementById('dash-metrics').innerHTML = `
+// ── DASHBOARD ────────────────────────────────────────────────
+async function renderDashboard(){
+  document.getElementById('dash-metrics').innerHTML=`<div style="color:var(--ink3);font-size:13px;grid-column:1/-1;padding:12px 0;">Loading...</div>`
+
+  const {data:receipts}=await supabase.from('receipts').select('id,receipt_date,total_amount,stores(name)')
+  const {data:items}=await supabase.from('receipt_items').select('category,price,quantity,receipt_id')
+
+  if(!receipts?.length){
+    document.getElementById('dash-metrics').innerHTML=`<div style="color:var(--ink3);font-size:13px;grid-column:1/-1;">No data yet — scan some receipts first.</div>`
+    document.getElementById('budget-grid').innerHTML=''
+    return
+  }
+
+  const total=receipts.reduce((s,r)=>s+Number(r.total_amount),0)
+  const stores=new Set(receipts.map(r=>r.stores?.name)).size
+  const now=new Date()
+  const thisMonth=receipts.filter(r=>{const d=new Date(r.receipt_date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()})
+  const monthTotal=thisMonth.reduce((s,r)=>s+Number(r.total_amount),0)
+
+  const catTotals={}
+  items?.forEach(i=>{catTotals[i.category]=(catTotals[i.category]||0)+(Number(i.price)*i.quantity)})
+  const topCat=Object.entries(catTotals).sort((a,b)=>b[1]-a[1])[0]
+
+  // Budget grid first
+  const now2=new Date()
+  const monthStart=`${now2.getFullYear()}-${String(now2.getMonth()+1).padStart(2,'0')}-01`
+  const monthItems=items?.filter(i=>{
+    const r=receipts.find(r=>r.id===i.receipt_id)
+    return r&&r.receipt_date>=monthStart
+  })||[]
+  const monthCatTotals={}
+  monthItems.forEach(i=>{monthCatTotals[i.category]=(monthCatTotals[i.category]||0)+(Number(i.price)*i.quantity)})
+  await renderBudgetGrid(monthCatTotals)
+
+  document.getElementById('dash-metrics').innerHTML=`
     <div class="metric-card"><div class="metric-label">Total spent</div><div class="metric-value">R${Math.round(total).toLocaleString('en-ZA')}</div><div class="metric-sub">${receipts.length} receipts</div></div>
     <div class="metric-card"><div class="metric-label">This month</div><div class="metric-value">R${Math.round(monthTotal).toLocaleString('en-ZA')}</div><div class="metric-sub">${thisMonth.length} receipts</div></div>
     <div class="metric-card"><div class="metric-label">Stores visited</div><div class="metric-value">${stores}</div><div class="metric-sub">unique stores</div></div>
     <div class="metric-card"><div class="metric-label">Top category</div><div class="metric-value" style="font-size:16px;">${topCat?topCat[0]:'—'}</div><div class="metric-sub">${topCat?'R'+topCat[1].toFixed(0):''}</div></div>`
 
-  destroyChart('cat'); destroyChart('trend')
+  destroyChart('cat');destroyChart('trend')
 
-  const catLabels = Object.keys(catTotals)
-  const catColors = catLabels.map(c=>CAT_COLORS[c]||'#888')
-  document.getElementById('dash-legend').innerHTML = catLabels.map((c,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${catColors[i]}"></div>${c} — R${catTotals[c].toFixed(0)}</div>`).join('')
+  const catLabels=Object.keys(catTotals)
+  const catColors=catLabels.map(c=>CAT_COLORS[c]||'#888')
+  document.getElementById('dash-legend').innerHTML=catLabels.map((c,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${catColors[i]}"></div>${c} — R${catTotals[c].toFixed(0)}</div>`).join('')
 
-  chartInstances['cat'] = new Chart(document.getElementById('cat-chart'),{
+  chartInstances['cat']=new Chart(document.getElementById('cat-chart'),{
     type:'doughnut',
     data:{labels:catLabels,datasets:[{data:Object.values(catTotals),backgroundColor:catColors,borderWidth:2,borderColor:'#FDFBF7'}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'R'+Number(ctx.raw).toFixed(2)}}},cutout:'65%'}
   })
 
-  const monthMap = {}
+  const monthMap={}
   receipts.forEach(r=>{const k=r.receipt_date?.slice(0,7);if(k)monthMap[k]=(monthMap[k]||0)+Number(r.total_amount)})
-  const months = Object.keys(monthMap).sort()
-  const mLabels = months.map(m=>{const[y,mo]=m.split('-');return new Date(y,mo-1).toLocaleDateString('en-ZA',{month:'short',year:'2-digit'})})
+  const months=Object.keys(monthMap).sort()
+  const mLabels=months.map(m=>{const[y,mo]=m.split('-');return new Date(y,mo-1).toLocaleDateString('en-ZA',{month:'short',year:'2-digit'})})
 
-  chartInstances['trend'] = new Chart(document.getElementById('trend-chart'),{
+  chartInstances['trend']=new Chart(document.getElementById('trend-chart'),{
     type:'bar',
     data:{labels:mLabels,datasets:[{data:months.map(m=>+monthMap[m].toFixed(2)),backgroundColor:'#2B5F3E',borderRadius:4}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'R'+c.raw.toFixed(2)}}},scales:{x:{grid:{display:false},ticks:{font:{size:11},autoSkip:false}},y:{grid:{color:'rgba(26,24,20,0.06)'},ticks:{callback:v=>'R'+v,font:{size:11}}}}}
   })
 
-  const storeTotals = {}
+  const storeTotals={}
   receipts.forEach(r=>{const n=r.stores?.name||'Unknown';storeTotals[n]=(storeTotals[n]||0)+Number(r.total_amount)})
-  const sorted = Object.entries(storeTotals).sort((a,b)=>b[1]-a[1]).slice(0,6)
-  const maxAmt = sorted[0]?.[1]||1
-  document.getElementById('stores-bars').innerHTML = sorted.map(([name,amt])=>`
+  const sorted=Object.entries(storeTotals).sort((a,b)=>b[1]-a[1]).slice(0,6)
+  const maxAmt=sorted[0]?.[1]||1
+  document.getElementById('stores-bars').innerHTML=sorted.map(([name,amt])=>`
     <div class="store-bar-row">
       <span style="font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(name)}</span>
       <div class="store-bar-bg"><div class="store-bar-fill" style="width:${Math.round(amt/maxAmt*100)}%"></div></div>
@@ -929,67 +1085,287 @@ async function renderDashboard() {
 
 function destroyChart(k){if(chartInstances[k]){chartInstances[k].destroy();delete chartInstances[k]}}
 
-// ── PRICE TRACKER ─────────────────────────────────────────────
-async function renderPriceTracker() {
-  const {data} = await supabase.from('receipt_items').select('name_normalised').order('name_normalised')
-  const unique = [...new Set(data?.map(d=>d.name_normalised).filter(Boolean))].slice(0,30)
-  const filtersEl = document.getElementById('price-filters')
-  if(!unique.length){filtersEl.innerHTML='<span style="color:var(--ink3);font-size:13px;">No items yet — scan some receipts first</span>';return}
-  filtersEl.innerHTML = unique.map(name=>`<div class="filter-chip${name===selectedPriceItem?' active':''}" onclick="selectPriceItem('${esc(name)}')">${esc(name)}</div>`).join('')
+// ── INSIGHTS — RECURRING SPEND DETECTION ─────────────────────
+async function renderInsights(){
+  await renderRecurringItems()
+  await renderBasketReceipts()
+}
+
+async function renderRecurringItems(){
+  const container=document.getElementById('recurring-container')
+  container.innerHTML=`<div style="color:var(--ink3);font-size:13px;">Analysing your purchase patterns...</div>`
+
+  // Get all items with their receipt dates
+  const {data}=await supabase.from('receipt_items')
+    .select('name_normalised,name,price,quantity,receipts!inner(receipt_date,stores(name))')
+    .order('receipts(receipt_date)',{ascending:false})
+    .limit(1000)
+
+  if(!data?.length){container.innerHTML=`<div style="color:var(--ink3);font-size:13px;">No data yet — scan some receipts to see patterns.</div>`;return}
+
+  // Group by normalised name
+  const itemMap={}
+  data.forEach(i=>{
+    const key=i.name_normalised||i.name.toLowerCase().trim()
+    if(!itemMap[key]) itemMap[key]={name:i.name,purchases:[]}
+    itemMap[key].purchases.push({
+      date:i.receipts.receipt_date,
+      price:Number(i.price),
+      store:i.receipts.stores?.name||'Unknown'
+    })
+  })
+
+  // Find recurring: bought 3+ times
+  const recurring=Object.entries(itemMap)
+    .filter(([,v])=>v.purchases.length>=2)
+    .map(([key,v])=>{
+      const sorted=v.purchases.sort((a,b)=>new Date(b.date)-new Date(a.date))
+      const latest=sorted[0]
+      const prev=sorted[1]
+      // Average gap in days
+      const gaps=[]
+      for(let i=0;i<sorted.length-1;i++){
+        const diff=(new Date(sorted[i].date)-new Date(sorted[i+1].date))/(1000*60*60*24)
+        gaps.push(Math.abs(diff))
+      }
+      const avgGap=gaps.reduce((s,g)=>s+g,0)/gaps.length
+      const priceChange=prev?((latest.price-prev.price)/prev.price*100):0
+      return{key,name:v.name,count:sorted.length,latest,prev,avgGap,priceChange,sorted}
+    })
+    .sort((a,b)=>b.count-a.count)
+    .slice(0,12)
+
+  if(!recurring.length){
+    container.innerHTML=`<div style="color:var(--ink3);font-size:13px;">Buy the same item at least twice to see patterns here.</div>`
+    return
+  }
+
+  container.innerHTML=`<div class="recurring-list">${recurring.map(item=>{
+    const gapText=item.avgGap<8?'Weekly':item.avgGap<16?'Fortnightly':item.avgGap<35?'Monthly':'Occasionally'
+    const priceColor=item.priceChange>0?'var(--red)':item.priceChange<0?'var(--accent)':'var(--ink3)'
+    const priceText=item.priceChange!==0?`<span style="color:${priceColor};font-weight:500;">${item.priceChange>0?'↑':'↓'}${Math.abs(item.priceChange).toFixed(1)}% vs last purchase</span>`:`<span style="color:var(--ink3);">Same price as last time</span>`
+    const daysSince=Math.round((new Date()-new Date(item.latest.date))/(1000*60*60*24))
+    const dueText=item.avgGap>0?`due in ~${Math.max(0,Math.round(item.avgGap-daysSince))} days`:`last ${daysSince}d ago`
+    return`<div class="recurring-row">
+      <div class="recurring-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-5.73"/></svg></div>
+      <div class="recurring-info">
+        <div class="recurring-name">${esc(item.name)}</div>
+        <div class="recurring-meta">${gapText} · ${item.count}× purchased · last at ${esc(item.latest.store)} · ${dueText}</div>
+        <div style="margin-top:3px;">${priceText}</div>
+      </div>
+      <div class="recurring-price">
+        <div class="recurring-current">R ${item.latest.price.toFixed(2)}</div>
+        ${item.prev?`<div style="font-size:11px;color:var(--ink3);">was R ${item.prev.price.toFixed(2)}</div>`:''}
+      </div>
+    </div>`
+  }).join('')}</div>`
+}
+
+// ── BASKET COMPARISON ────────────────────────────────────────
+async function renderBasketReceipts(){
+  const wrap=document.getElementById('basket-receipts-list')
+  const {data}=await supabase.from('receipts').select('id,receipt_date,total_amount,stores(name)').order('receipt_date',{ascending:false}).limit(20)
+  if(!data?.length){wrap.innerHTML=`<div style="color:var(--ink3);font-size:13px;">No receipts yet.</div>`;return}
+  wrap.innerHTML=`<div class="receipts-list">${data.map(r=>`
+    <div class="receipt-row" onclick="openBasketComparison('${r.id}','${esc(r.stores?.name||'Unknown')}','${r.receipt_date}')">
+      <div class="receipt-store">${esc(r.stores?.name||'Unknown')}</div>
+      <div class="receipt-meta">${fmtDate(r.receipt_date)}</div>
+      <div style="text-align:right;">
+        <div class="receipt-amount">R ${Number(r.total_amount).toFixed(2)}</div>
+        <div style="font-size:11px;color:var(--accent);margin-top:2px;">Compare →</div>
+      </div>
+    </div>`).join('')}</div>`
+}
+
+window.openBasketComparison = async(receiptId, storeName, receiptDate)=>{
+  const modal=document.getElementById('basket-modal')
+  const content=document.getElementById('basket-modal-content')
+  content.innerHTML=`<div style="color:var(--ink3);font-size:13px;padding:20px 0;">Loading comparison...</div>`
+  modal.style.display='flex'
+
+  // Get items from this receipt
+  const {data:items}=await supabase.from('receipt_items').select('*').eq('receipt_id',receiptId)
+  if(!items?.length){content.innerHTML=`<div style="color:var(--ink3);">No items found for this receipt.</div>`;return}
+
+  // Get all known stores
+  const {data:allStores}=await supabase.from('stores').select('name')
+  const otherStores=allStores?.map(s=>s.name).filter(s=>s!==storeName)||[]
+
+  // For each item, find last known price at each other store
+  const priceHistory={}
+  for(const store of otherStores){
+    const {data:ph}=await supabase.from('item_price_history').select('item_name,price,receipt_date').eq('store_name',store).in('item_name',items.map(i=>i.name_normalised||i.name.toLowerCase()))
+    if(ph) ph.forEach(p=>{
+      if(!priceHistory[p.item_name]) priceHistory[p.item_name]={}
+      // Only keep most recent per store
+      if(!priceHistory[p.item_name][store]||p.receipt_date>priceHistory[p.item_name][store].date){
+        priceHistory[p.item_name][store]={price:Number(p.price),date:p.receipt_date}
+      }
+    })
+  }
+
+  // Build comparison table
+  const displayStores=otherStores.slice(0,3)
+  const rows=items.map(item=>{
+    const key=item.name_normalised||item.name.toLowerCase()
+    const paidHere=Number(item.price)
+    const storePrices=displayStores.map(store=>{
+      const known=priceHistory[key]?.[store]
+      return known?{price:known.price,date:known.date,store}:null
+    })
+    const allPrices=[paidHere,...storePrices.filter(Boolean).map(p=>p.price)]
+    const minPrice=Math.min(...allPrices)
+    return{item,paidHere,storePrices,minPrice}
+  })
+
+  // Calculate total savings
+  const currentTotal=rows.reduce((s,r)=>s+(r.paidHere*(r.item.quantity||1)),0)
+  const bestTotals=displayStores.map(store=>{
+    const total=rows.reduce((s,r)=>{
+      const sp=r.storePrices[displayStores.indexOf(store)]
+      const p=sp?sp.price:r.paidHere
+      return s+(p*(r.item.quantity||1))
+    },0)
+    return{store,total}
+  })
+  const bestAlt=bestTotals.sort((a,b)=>a.total-b.total)[0]
+  const maxSaving=bestAlt?Math.max(0,currentTotal-bestAlt.total):0
+
+  content.innerHTML=`
+    <div style="margin-bottom:14px;">
+      <div style="font-size:13px;color:var(--ink2);margin-bottom:10px;">You paid at <strong style="color:var(--ink)">${esc(storeName)}</strong> on ${fmtDate(receiptDate)}</div>
+      ${maxSaving>0.50?`<div style="display:flex;justify-content:center;margin-bottom:14px;"><span class="saving-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"/></svg>Could save up to R ${maxSaving.toFixed(2)} at ${esc(bestAlt.store)}</span></div>`:'<div style="margin-bottom:10px;font-size:12px;color:var(--ink3);">Based on last known prices at your other stores.</div>'}
+    </div>
+
+    <div class="basket-header-row">
+      <div style="font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;">Item</div>
+      <div style="font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;text-align:right;">${esc(storeName)}</div>
+      ${displayStores.slice(0,2).map(s=>`<div style="font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;text-align:right;overflow:hidden;text-overflow:ellipsis;">${esc(s)}</div>`).join('')}
+    </div>
+
+    ${rows.map(r=>{
+      const qty=r.item.quantity||1
+      return`<div class="basket-item-row">
+        <div style="font-size:12px;">${esc(r.item.name)}${qty>1?` ×${qty}`:''}</div>
+        <div class="basket-cell ${r.paidHere===r.minPrice?'best':''}">R ${(r.paidHere*qty).toFixed(2)}</div>
+        ${displayStores.slice(0,2).map(store=>{
+          const sp=r.storePrices[displayStores.indexOf(store)]
+          if(!sp) return`<div class="basket-cell na">—</div>`
+          const lineTotal=sp.price*qty
+          const cls=lineTotal<r.paidHere*qty?'best':lineTotal>r.paidHere*qty?'worst':'current'
+          const daysSince=Math.round((new Date()-new Date(sp.date))/(1000*60*60*24))
+          return`<div class="basket-cell ${cls}" title="${daysSince}d ago">R ${lineTotal.toFixed(2)}</div>`
+        }).join('')}
+      </div>`
+    }).join('')}
+
+    <div style="padding:12px 0 0;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr repeat(${Math.min(displayStores.length,2)+1},auto);gap:8px;font-size:13px;font-weight:500;margin-top:4px;">
+      <div>Total</div>
+      <div style="text-align:right;font-family:var(--font-mono);">R ${currentTotal.toFixed(2)}</div>
+      ${bestTotals.slice(0,2).map(bt=>`<div style="text-align:right;font-family:var(--font-mono);color:${bt.total<currentTotal?'var(--accent)':'var(--ink2)'};">R ${bt.total.toFixed(2)}</div>`).join('')}
+    </div>
+
+    ${displayStores.length===0?`<div style="margin-top:16px;font-size:12px;color:var(--ink3);">Scan receipts from other stores to enable basket comparison.</div>`:''}
+
+    <div style="margin-top:12px;font-size:11px;color:var(--ink3);border-top:1px solid var(--border);padding-top:10px;">
+      Green = cheapest option · Red = more expensive · — = no price data yet · Prices shown are last known unit prices
+    </div>`
+}
+
+window.closeBasketModal = ()=>document.getElementById('basket-modal').style.display='none'
+
+// ── PRICE TRACKER / INFLATION ─────────────────────────────────
+async function renderPriceTracker(){
+  const {data}=await supabase.from('receipt_items').select('name_normalised').order('name_normalised')
+  const unique=[...new Set(data?.map(d=>d.name_normalised).filter(Boolean))].slice(0,30)
+  const filtersEl=document.getElementById('price-filters')
+  if(!unique.length){filtersEl.innerHTML=`<span style="color:var(--ink3);font-size:13px;">No items yet — scan some receipts first</span>`;return}
+  filtersEl.innerHTML=unique.map(name=>`<div class="filter-chip${name===selectedPriceItem?' active':''}" onclick="selectPriceItem('${esc(name)}')">${esc(name)}</div>`).join('')
   if(!selectedPriceItem&&unique.length) selectPriceItem(unique[0])
   else if(selectedPriceItem) await renderPriceChart(selectedPriceItem)
 }
 
-window.selectPriceItem = async (name) => {
-  selectedPriceItem = name
+window.selectPriceItem = async(name)=>{
+  selectedPriceItem=name
   document.querySelectorAll('.filter-chip').forEach(c=>c.classList.toggle('active',c.textContent===name))
   await renderPriceChart(name)
 }
 
-async function renderPriceChart(itemName) {
-  const {data} = await supabase.from('item_price_history').select('*').eq('item_name',itemName).order('receipt_date')
-  document.getElementById('price-item-label').textContent = itemName + ' — price history'
-  const stores = [...new Set(data?.map(d=>d.store_name))]
-  const colors = ['#2B5F3E','#2A4B8C','#C4822A','#B33A2A','#1E6B6B','#5B3A8C']
-  const datasets = stores.map((store,idx)=>({
-    label:store,
-    data:data.filter(d=>d.store_name===store).map(p=>({x:p.receipt_date,y:Number(p.price)})),
-    borderColor:colors[idx%colors.length],backgroundColor:'transparent',tension:0.3,pointRadius:5,borderWidth:2,
-    borderDash:idx>0?[5,3]:[]
-  }))
+async function renderPriceChart(itemName){
+  const {data}=await supabase.from('item_price_history').select('*').eq('item_name',itemName).order('receipt_date')
+  if(!data?.length){document.getElementById('price-item-label').textContent=itemName+' — no data yet';document.getElementById('price-table-wrap').innerHTML='';destroyChart('price');return}
+  document.getElementById('price-item-label').textContent=itemName+' — unit price tracker'
+
+  const stores=[...new Set(data.map(d=>d.store_name))]
+  const colors=['#2B5F3E','#2A4B8C','#C4822A','#B33A2A','#1E6B6B','#5B3A8C']
+
+  // Inflation summary cards
+  const inflationCards=stores.map((store,idx)=>{
+    const pts=data.filter(d=>d.store_name===store).sort((a,b)=>new Date(a.receipt_date)-new Date(b.receipt_date))
+    if(pts.length<2) return null
+    const first=Number(pts[0].price),last=Number(pts[pts.length-1].price)
+    const pct=(last-first)/first*100
+    const arrow=pct>0?'↑':pct<0?'↓':'→'
+    const col=pct>5?'var(--red)':pct>0?'var(--amber)':pct<0?'var(--accent)':'var(--ink2)'
+    const bg=pct>5?'var(--red-light)':pct>0?'var(--amber-light)':pct<0?'var(--accent-light)':'var(--surface2)'
+    return`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;flex:1;min-width:150px;">
+      <div style="font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;margin-bottom:6px;">${esc(store)}</div>
+      <div style="font-size:22px;font-weight:500;font-family:var(--font-display);color:${col};">${arrow} ${Math.abs(pct).toFixed(1)}%</div>
+      <div style="font-size:12px;color:var(--ink2);margin-top:3px;">R${first.toFixed(2)} → R${last.toFixed(2)}</div>
+      <div style="margin-top:6px;padding:2px 8px;border-radius:12px;display:inline-block;font-size:11px;font-weight:500;background:${bg};color:${col};">${pct>5?'Rising fast':pct>0?'Slight increase':pct<0?'Cheaper':'Stable'}</div>
+    </div>`
+  }).filter(Boolean)
+
+  const existing=document.getElementById('inflation-summary')
+  if(existing) existing.remove()
+  if(inflationCards.length){
+    const summary=document.createElement('div')
+    summary.id='inflation-summary'
+    summary.style.cssText='display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;'
+    summary.innerHTML=inflationCards.join('')
+    document.getElementById('price-filters').after(summary)
+  }
+
   destroyChart('price')
-  if(!data?.length){document.getElementById('price-table-wrap').innerHTML='';return}
-  chartInstances['price'] = new Chart(document.getElementById('price-chart'),{
-    type:'line',data:{datasets},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:10,boxHeight:10}},tooltip:{callbacks:{label:c=>c.dataset.label+': R'+c.parsed.y.toFixed(2)}}},scales:{x:{type:'category',grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(26,24,20,0.06)'},ticks:{callback:v=>'R'+Number(v).toFixed(2),font:{size:11}}}}}
+  chartInstances['price']=new Chart(document.getElementById('price-chart'),{
+    type:'line',
+    data:{datasets:stores.map((store,idx)=>({label:store,data:data.filter(d=>d.store_name===store).map(p=>({x:p.receipt_date,y:Number(p.price)})),borderColor:colors[idx%colors.length],backgroundColor:'transparent',tension:0.3,pointRadius:5,borderWidth:2,borderDash:idx>0?[5,3]:[]}))} ,
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:10,boxHeight:10}},tooltip:{callbacks:{label:c=>c.dataset.label+': R'+c.parsed.y.toFixed(2)+' per unit'}}},scales:{x:{type:'category',grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(26,24,20,0.06)'},ticks:{callback:v=>'R'+Number(v).toFixed(2),font:{size:11}},title:{display:true,text:'Unit price (R)',font:{size:10},color:'var(--ink3)'}}}}
   })
-  document.getElementById('price-table-wrap').innerHTML = `<div class="card"><div class="card-title">Price History</div>
+
+  // Table with % change
+  const rows=data.map(d=>{
+    const storePts=data.filter(x=>x.store_name===d.store_name).sort((a,b)=>new Date(a.receipt_date)-new Date(b.receipt_date))
+    const idx2=storePts.findIndex(x=>x.receipt_date===d.receipt_date&&x.price===d.price)
+    let badge=''
+    if(idx2>0){
+      const prev=Number(storePts[idx2-1].price),curr=Number(d.price),pct=((curr-prev)/prev*100)
+      const col=pct>0?'var(--red)':'var(--accent)',bg=pct>0?'var(--red-light)':'var(--accent-light)'
+      badge=`<span style="font-size:10px;padding:2px 6px;border-radius:10px;background:${bg};color:${col};font-weight:500;">${pct>0?'+':''}${pct.toFixed(1)}%</span>`
+    }
+    return`<tr><td style="padding:7px 8px;border-bottom:1px solid rgba(26,24,20,0.06);">${fmtDate(d.receipt_date)}</td><td style="padding:7px 8px;border-bottom:1px solid rgba(26,24,20,0.06);">${esc(d.store_name)}</td><td style="padding:7px 8px;border-bottom:1px solid rgba(26,24,20,0.06);text-align:right;font-family:var(--font-mono);">R ${Number(d.price).toFixed(2)}</td><td style="padding:7px 8px;border-bottom:1px solid rgba(26,24,20,0.06);text-align:right;">${badge}</td></tr>`
+  }).join('')
+
+  document.getElementById('price-table-wrap').innerHTML=`<div class="card"><div class="card-title">Price history — unit prices</div>
     <table style="width:100%;border-collapse:collapse;font-size:13px;">
       <thead><tr>
         <th style="text-align:left;padding:4px 8px 10px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Date</th>
         <th style="text-align:left;padding:4px 8px 10px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Store</th>
-        <th style="text-align:right;padding:4px 8px 10px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Price</th>
+        <th style="text-align:right;padding:4px 8px 10px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Unit price</th>
+        <th style="text-align:right;padding:4px 8px 10px;font-size:10px;font-family:var(--font-mono);color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--border);">Change</th>
       </tr></thead>
-      <tbody>${data.map(d=>`<tr>
-        <td style="padding:7px 8px;border-bottom:1px solid rgba(26,24,20,0.06);">${fmtDate(d.receipt_date)}</td>
-        <td style="padding:7px 8px;border-bottom:1px solid rgba(26,24,20,0.06);">${esc(d.store_name)}</td>
-        <td style="padding:7px 8px;border-bottom:1px solid rgba(26,24,20,0.06);text-align:right;font-family:var(--font-mono);">R ${Number(d.price).toFixed(2)}</td>
-      </tr>`).join('')}</tbody>
+      <tbody>${rows}</tbody>
     </table></div>`
 }
 
-// ── UTILS ─────────────────────────────────────────────────────
+// ── UTILS ────────────────────────────────────────────────────
 function fmtDate(d){if(!d)return'';const dt=new Date(d+'T00:00:00');return dt.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'})}
 
 let toastTimer
-window.showToast = (msg) => {
-  const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show')
-  clearTimeout(toastTimer); toastTimer = setTimeout(()=>el.classList.remove('show'),3500)
+window.showToast = (msg)=>{
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show')
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3800)
 }
-
-// Expose needed functions to global scope for inline handlers
-window.addItemRow = window.addItemRow
-window.updateTotal = window.updateTotal
 </script>
 </body>
 </html>
