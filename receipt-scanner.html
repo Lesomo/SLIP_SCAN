@@ -401,9 +401,14 @@
         <!-- BUDGET ALERTS SECTION -->
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
           <div style="font-size:11px;font-family:var(--font-mono);color:var(--ink3);letter-spacing:1px;text-transform:uppercase;">Monthly Budgets</div>
-          <button class="btn btn-ghost btn-sm" onclick="openBudgetModal()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Set budgets
-          </button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="openCategoryModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Categories
+            </button>
+            <button class="btn btn-ghost btn-sm" onclick="openBudgetModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Set budgets
+            </button>
+          </div>
         </div>
         <div class="budget-grid" id="budget-grid"></div>
 
@@ -480,6 +485,46 @@
   </div>
 </nav>
 
+<!-- CONFIRM DELETE MODAL -->
+<div class="modal-overlay" id="confirm-modal" style="display:none;">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <span class="modal-title">Delete receipt?</span>
+      <button class="modal-close" onclick="closeConfirmModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <p id="confirm-msg" style="font-size:13px;color:var(--ink2);margin-bottom:20px;"></p>
+    <div style="display:flex;gap:8px;">
+      <button id="confirm-action" class="btn btn-danger" style="flex:1;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Yes, delete
+      </button>
+      <button class="btn btn-ghost" onclick="closeConfirmModal()" style="flex:1;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE CATEGORIES MODAL -->
+<div class="modal-overlay" id="category-modal" style="display:none;">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <span class="modal-title">Manage categories</span>
+      <button class="modal-close" onclick="closeCategoryModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:14px;">Add your own categories or remove ones you don't use.</div>
+    <div id="category-list" style="margin-bottom:16px;max-height:260px;overflow-y:auto;"></div>
+    <div style="display:flex;gap:8px;">
+      <input type="text" id="new-cat-input" placeholder="New category name..." style="flex:1;" onkeydown="if(event.key==='Enter')addCategory()">
+      <button class="btn btn-primary" onclick="addCategory()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add
+      </button>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--ink3);">
+      Categories are saved on this device. Changes take effect immediately in the scanner.
+    </div>
+  </div>
+</div>
+
 <!-- CAMERA MODAL -->
 <div class="modal-overlay" id="camera-modal" style="display:none;">
   <div class="modal">
@@ -509,7 +554,7 @@
       <span class="modal-title">Set Monthly Budgets</span>
       <button class="modal-close" onclick="closeBudgetModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
-    <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;">Set a monthly spend limit per category. Leave blank for no limit.</div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;">Set a monthly spend limit per category. Leave blank for no limit. <button class="budget-edit" onclick="closeBudgetModal();openCategoryModal()">Manage categories</button></div>
     <div id="budget-inputs"></div>
     <div style="display:flex;gap:8px;margin-top:16px;">
       <button class="btn btn-primary" onclick="saveBudgets()" style="flex:1;">Save Budgets</button>
@@ -548,8 +593,24 @@ const supabase = createClient(
 )
 
 // ── CONSTANTS ────────────────────────────────────────────────
-const CATEGORIES = ['Groceries','Produce','Household','Personal','Beverages','Other']
-const CAT_COLORS = {Groceries:'#2B5F3E',Produce:'#1E6B6B',Household:'#2A4B8C',Personal:'#5B3A8C',Beverages:'#C4822A',Other:'#6B6760'}
+// Categories are user-defined, stored per user in localStorage
+const DEFAULT_CATEGORIES = ['Groceries','Produce','Household','Personal','Beverages']
+const DEFAULT_COLORS = {Groceries:'#2B5F3E',Produce:'#1E6B6B',Household:'#2A4B8C',Personal:'#5B3A8C',Beverages:'#C4822A'}
+const EXTRA_COLORS = ['#8B3A8B','#2A7A6A','#8B5A2B','#4A7A2A','#2A5A8B','#8B2A4A','#6A4A8B','#7A6A2A','#5A2A8B','#2A8B5A']
+
+function getCategories() {
+  try { return JSON.parse(localStorage.getItem('slipwise_cats_'+(currentUser?.id||'x'))||'null') || [...DEFAULT_CATEGORIES] }
+  catch { return [...DEFAULT_CATEGORIES] }
+}
+function getCatColors() {
+  const cats = getCategories()
+  const colors = {...DEFAULT_COLORS}
+  cats.forEach((c,i) => { if(!colors[c]) colors[c] = EXTRA_COLORS[i % EXTRA_COLORS.length] })
+  return colors
+}
+function saveCategories(cats) {
+  localStorage.setItem('slipwise_cats_'+(currentUser?.id||'x'), JSON.stringify(cats))
+}
 
 // ── STATE ────────────────────────────────────────────────────
 let capturedImages = []
@@ -612,6 +673,16 @@ async function initApp() {
   // Load budgets from localStorage (per user)
   budgets = JSON.parse(localStorage.getItem('slipwise_budgets_'+user.id)||'{}')
   addItemRow()
+}
+
+function refreshCategoryUI() {
+  document.querySelectorAll('#items-tbody tr').forEach(tr => {
+    const sel = tr.querySelector('select')
+    if(!sel) return
+    const cur = sel.value
+    const cats = getCategories()
+    sel.innerHTML = cats.map(c=>`<option value="${c}"${c===cur?' selected':''}>${c}</option>`).join('')
+  })
 }
 supabase.auth.getSession().then(({data:{session}})=>{if(session)initApp()})
 
@@ -735,12 +806,13 @@ function parseOCRText(text){
 
 function guessCategory(name){
   name=name.toLowerCase()
-  if(/milk|egg|bread|flour|sugar|rice|pasta|chicken|beef|fish|cheese|butter|yoghurt|cereal|oil|salt|pepper|spice|sauce/.test(name))return'Groceries'
-  if(/apple|banana|orange|tomato|potato|onion|lettuce|spinach|fruit|veg|carrot|grape|pear|strawb/.test(name))return'Produce'
-  if(/soap|shampoo|toothpaste|toilet|dish|wash|clean|detergent|bleach|broom|mop|sponge/.test(name))return'Household'
-  if(/lotion|cream|deo|deodorant|perfume|makeup|lip|mascara|razor|tampon|pad|vitamin/.test(name))return'Personal'
-  if(/water|juice|cool|drink|cola|beer|wine|coffee|tea|energy/.test(name))return'Beverages'
-  return'Other'
+  const cats=getCategories()
+  if(/milk|egg|bread|flour|sugar|rice|pasta|chicken|beef|fish|cheese|butter|yoghurt|cereal|oil|salt|pepper|spice|sauce/.test(name))return cats.includes('Groceries')?'Groceries':cats[0]
+  if(/apple|banana|orange|tomato|potato|onion|lettuce|spinach|fruit|veg|carrot|grape|pear|strawb/.test(name))return cats.includes('Produce')?'Produce':cats[0]
+  if(/soap|shampoo|toothpaste|toilet|dish|wash|clean|detergent|bleach|broom|mop|sponge/.test(name))return cats.includes('Household')?'Household':cats[0]
+  if(/lotion|cream|deo|deodorant|perfume|makeup|lip|mascara|razor|tampon|pad|vitamin/.test(name))return cats.includes('Personal')?'Personal':cats[0]
+  if(/water|juice|cool|drink|cola|beer|wine|coffee|tea|energy/.test(name))return cats.includes('Beverages')?'Beverages':cats[0]
+  return cats[cats.length-1]
 }
 
 // ── SMART NORMALISATION ──────────────────────────────────────
@@ -774,7 +846,7 @@ async function findSimilarItems(name) {
 window.addItemRow = (name='', unitPrice='', cat='Groceries', qty=1) => {
   const tbody=document.getElementById('items-tbody')
   const tr=document.createElement('tr')
-  const opts=CATEGORIES.map(c=>`<option value="${c}"${c===cat?' selected':''}>${c}</option>`).join('')
+  const opts=getCategories().map(c=>`<option value="${c}"${c===cat?' selected':''}>${c}</option>`).join('')
   const lt=unitPrice&&qty?(parseFloat(unitPrice)*qty).toFixed(2):''
   tr.innerHTML=`
     <td>
@@ -907,10 +979,21 @@ async function renderReceiptsList(){
   const {data,error}=await supabase.from('receipts').select('id,receipt_date,total_amount,stores(name)').order('receipt_date',{ascending:false}).limit(100)
   if(error||!data?.length){wrap.innerHTML=`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>No receipts yet</h3><p>Scan your first receipt to get started</p></div>`;return}
   wrap.innerHTML=`<div class="receipts-list">${data.map(r=>`
-    <div class="receipt-row" onclick="loadReceipt('${r.id}')">
-      <div class="receipt-store">${esc(r.stores?.name||'Unknown')}</div>
-      <div class="receipt-meta">${fmtDate(r.receipt_date)}</div>
-      <div class="receipt-amount">R ${Number(r.total_amount).toFixed(2)}</div>
+    <div class="receipt-row" style="cursor:default;">
+      <div onclick="loadReceipt('${r.id}')" style="flex:1;display:flex;align-items:center;gap:16px;cursor:pointer;min-width:0;">
+        <div class="receipt-store">${esc(r.stores?.name||'Unknown')}</div>
+        <div class="receipt-meta">${fmtDate(r.receipt_date)}</div>
+        <div class="receipt-amount">R ${Number(r.total_amount).toFixed(2)}</div>
+      </div>
+      <button onclick="confirmDeleteReceipt('${r.id}','${esc(r.stores?.name||'Unknown')}','${r.receipt_date}')"
+        style="flex-shrink:0;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:6px;color:var(--ink3);margin-left:4px;"
+        title="Delete receipt"
+        onmouseover="this.style.background='var(--red-light)';this.style.color='var(--red)'"
+        onmouseout="this.style.background='none';this.style.color='var(--ink3)'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px;display:block;">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+        </svg>
+      </button>
     </div>`).join('')}</div>`
 }
 
@@ -926,10 +1009,88 @@ window.loadReceipt = async(id)=>{
   showToast('Loaded — edit and re-save to create a new entry')
 }
 
+// ── DELETE RECEIPT ───────────────────────────────────────────
+window.confirmDeleteReceipt = (id, store, date) => {
+  const modal = document.getElementById('confirm-modal')
+  document.getElementById('confirm-msg').textContent = `Delete the receipt from ${store} on ${date}? This cannot be undone.`
+  document.getElementById('confirm-action').onclick = () => deleteReceipt(id)
+  modal.style.display = 'flex'
+}
+window.closeConfirmModal = () => document.getElementById('confirm-modal').style.display = 'none'
+
+async function deleteReceipt(id) {
+  closeConfirmModal()
+  showSaving('Deleting receipt...')
+  try {
+    // receipt_items deleted automatically via ON DELETE CASCADE
+    const {error} = await supabase.from('receipts').delete().eq('id', id)
+    if(error) throw error
+    hideSaving()
+    showToast('Receipt deleted')
+    renderReceiptsList()
+  } catch(err) {
+    hideSaving()
+    showToast('Error: ' + err.message)
+  }
+}
+
+// ── MANAGE CATEGORIES ────────────────────────────────────────
+window.openCategoryModal = () => {
+  renderCategoryList()
+  document.getElementById('category-modal').style.display = 'flex'
+}
+window.closeCategoryModal = () => document.getElementById('category-modal').style.display = 'none'
+
+function renderCategoryList() {
+  const cats = getCategories()
+  const colors = getCatColors()
+  document.getElementById('category-list').innerHTML = cats.map((cat, i) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <div style="width:12px;height:12px;border-radius:3px;background:${colors[cat]||'#888'};flex-shrink:0;"></div>
+      <span style="flex:1;font-size:13px;">${esc(cat)}</span>
+      ${cats.length > 1 ? `<button onclick="deleteCategory('${esc(cat)}')"
+        style="background:none;border:none;cursor:pointer;padding:4px;color:var(--ink3);border-radius:4px;display:flex;align-items:center;"
+        onmouseover="this.style.color='var(--red)';this.style.background='var(--red-light)'"
+        onmouseout="this.style.color='var(--ink3)';this.style.background='none'"
+        title="Delete category">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>` : ''}
+    </div>`).join('')
+}
+
+window.addCategory = () => {
+  const input = document.getElementById('new-cat-input')
+  const name = input.value.trim()
+  if(!name){ showToast('Please enter a category name'); return }
+  const cats = getCategories()
+  if(cats.map(c=>c.toLowerCase()).includes(name.toLowerCase())){ showToast('Category already exists'); return }
+  cats.push(name)
+  saveCategories(cats)
+  input.value = ''
+  renderCategoryList()
+  refreshCategoryUI()
+  showToast(`"${name}" added`)
+}
+
+window.deleteCategory = (cat) => {
+  const cats = getCategories()
+  if(cats.length <= 1){ showToast("Can't delete the last category"); return }
+  const updated = cats.filter(c => c !== cat)
+  saveCategories(updated)
+  // Remove from budgets too
+  delete budgets[cat]
+  localStorage.setItem('slipwise_budgets_'+currentUser.id, JSON.stringify(budgets))
+  renderCategoryList()
+  refreshCategoryUI()
+  showToast(`"${cat}" removed`)
+}
+
 // ── BUDGET ALERTS ────────────────────────────────────────────
 window.openBudgetModal = () => {
   const inp = document.getElementById('budget-inputs')
-  inp.innerHTML = CATEGORIES.map(cat=>`
+  inp.innerHTML = getCategories().map(cat=>`
     <div class="form-group">
       <label>${cat}</label>
       <div style="position:relative;">
@@ -942,7 +1103,7 @@ window.openBudgetModal = () => {
 window.closeBudgetModal = ()=>document.getElementById('budget-modal').style.display='none'
 
 window.saveBudgets = () => {
-  CATEGORIES.forEach(cat=>{
+  getCategories().forEach(cat=>{
     const val=parseFloat(document.getElementById('budget-'+cat)?.value)
     if(!isNaN(val)&&val>0) budgets[cat]=val
     else delete budgets[cat]
@@ -960,7 +1121,7 @@ async function renderBudgetGrid(catTotals) {
   const dayOfMonth = now.getDate()
   const monthProgress = dayOfMonth/daysInMonth
 
-  const cats = CATEGORIES.filter(c=>budgets[c]||catTotals[c])
+  const cats = getCategories().filter(c=>budgets[c]||catTotals[c])
   if(!cats.length){
     grid.innerHTML=`<div style="color:var(--ink3);font-size:13px;padding:8px 0 16px;">No budgets set yet — <button class="budget-edit" onclick="openBudgetModal()">set monthly budgets</button> to track your spending limits.</div>`
     return
@@ -999,7 +1160,7 @@ async function checkBudgetAlerts() {
   const {data:items}=await supabase.from('receipt_items').select('category,price,quantity,receipts!inner(receipt_date,user_id)').gte('receipts.receipt_date',monthStart)
   const catTotals={}
   items?.forEach(i=>{catTotals[i.category]=(catTotals[i.category]||0)+(Number(i.price)*i.quantity)})
-  CATEGORIES.forEach(cat=>{
+  getCategories().forEach(cat=>{
     if(budgets[cat]&&catTotals[cat]){
       const pct=(catTotals[cat]/budgets[cat])*100
       if(pct>=100) showToast(`⚠ ${cat} budget exceeded! Spent R${catTotals[cat].toFixed(0)} of R${budgets[cat]}`)
