@@ -1496,7 +1496,7 @@ async function renderDashboard(){
   destroyChart('cat');destroyChart('trend')
 
   const catLabels=Object.keys(catTotals)
-  const const allCatColors=getCatColors();catColors=catLabels.map(c=>allCatColors[c]||'#888')
+  const allCatColors=getCatColors();const catColors=catLabels.map(c=>allCatColors[c]||'#888')
   document.getElementById('dash-legend').innerHTML=catLabels.map((c,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${catColors[i]}"></div>${c} — R${catTotals[c].toFixed(0)}</div>`).join('')
 
   chartInstances['cat']=new Chart(document.getElementById('cat-chart'),{
