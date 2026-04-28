@@ -684,6 +684,9 @@ async function initApp() {
   // Load budgets from localStorage (per user)
   budgets = JSON.parse(localStorage.getItem('slipwise_budgets_'+user.id)||'{}')
   addItemRow()
+  // Restore saved OCR key if any
+  const savedKey = localStorage.getItem('slipwise_ocr_key_'+user.id)
+  if(savedKey) window._ocrKeyOverride = savedKey
 }
 
 function refreshCategoryUI() {
@@ -770,22 +773,152 @@ window.doneWithCamera = ()=>{closeCamera();if(capturedImages.length)showToast(ca
 window.closeCamera = ()=>{if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}document.getElementById('camera-modal').style.display='none'}
 
 // ── OCR ──────────────────────────────────────────────────────
+// ── OCR API KEY ───────────────────────────────────────────────
+// Get your FREE key at https://ocr.space/ocrapi (30 seconds, 500 req/day)
+// Paste it below to replace 'helloworld'
+const OCR_API_KEY = 'helloworld'
+
 window.runOCR = async()=>{
   if(!capturedImages.length) return
   setOcrStatus('processing','Extracting text from '+capturedImages.length+' image(s)...')
+
+  // Warn if still on demo key
+  if(OCR_API_KEY === 'helloworld') {
+    setOcrStatus('processing','Using demo key — may fail on mobile. See tip below.')
+  }
+
   let allText=''
+  let lastError=''
+
   for(const img of capturedImages){
     try{
-      const fd=new FormData()
-      fd.append('file',img.blob,img.filename);fd.append('apikey','helloworld');fd.append('isTable','true');fd.append('OCREngine','2')
-      const res=await fetch('https://api.ocr.space/parse/image',{method:'POST',body:fd})
-      const json=await res.json()
-      if(json.ParsedResults?.[0]?.ParsedText) allText+=(allText?'\n---\n':'')+json.ParsedResults[0].ParsedText
-    }catch{}
+      // Resize image before sending — large photos fail on free tier
+      const resizedBlob = await resizeImageBlob(img.blob, 1600)
+
+      // Convert blob to base64 — avoids CORS issues when hosted on GitHub Pages etc.
+      const base64 = await blobToBase64(resizedBlob)
+      const apiKey = window._ocrKeyOverride || localStorage.getItem('slipwise_ocr_key_'+(currentUser?.id||'x')) || OCR_API_KEY
+
+      const fd = new FormData()
+      fd.append('base64Image', base64)
+      fd.append('apikey', apiKey)
+      fd.append('isTable', 'true')
+      fd.append('OCREngine', '2')
+      fd.append('scale', 'true')
+      fd.append('detectOrientation', 'true')
+      fd.append('language', 'eng')
+      fd.append('filetype', 'jpg')
+
+      const res = await fetch('https://api.ocr.space/parse/image', {
+        method: 'POST',
+        body: fd,
+        mode: 'cors'
+      })
+
+      if(!res.ok) { lastError = `HTTP ${res.status}`; continue }
+
+      const json = await res.json()
+
+      // OCR.space returns error codes — surface them clearly
+      if(json.IsErroredOnProcessing) {
+        lastError = json.ErrorMessage?.[0] || 'OCR processing error'
+        console.warn('OCR error:', json)
+        continue
+      }
+      if(json.OCRExitCode === 99) { lastError = 'Rate limit reached — get a free key at ocr.space/ocrapi'; continue }
+      if(json.OCRExitCode === 98) { lastError = 'Demo key limit reached — get a free key at ocr.space/ocrapi'; continue }
+
+      const text = json.ParsedResults?.[0]?.ParsedText
+      if(text?.trim()) allText += (allText?'\n---\n':'') + text
+
+    } catch(err) {
+      lastError = err.message
+      console.warn('OCR fetch error:', err)
+    }
   }
-  if(allText.trim()){setOcrStatus('done','Text extracted — review and edit below');parseOCRText(allText)}
-  else setOcrStatus('error','Could not extract text — please fill in manually')
+
+  if(allText.trim()) {
+    setOcrStatus('done','Text extracted — review and edit below')
+    parseOCRText(allText)
+  } else {
+    const isKeyError = lastError.includes('key') || lastError.includes('Rate') || lastError.includes('99') || lastError.includes('98') || OCR_API_KEY === 'helloworld'
+    if(isKeyError) {
+      setOcrStatus('error', 'Demo key rate-limited. <a href="https://ocr.space/ocrapi" target="_blank" style="color:inherit;font-weight:600;text-decoration:underline;">Get your free key at ocr.space</a> and paste it in the app settings.')
+      document.getElementById('ocr-status').innerHTML = document.getElementById('ocr-status').innerHTML // allow HTML
+      showOCRKeyPrompt()
+    } else {
+      setOcrStatus('error', lastError ? 'OCR failed: '+lastError+' — try a clearer photo or fill in manually' : 'Could not read receipt — try a clearer photo or fill in manually')
+    }
+  }
 }
+
+// Resize image to max width before sending — reduces failures on free OCR tier
+async function resizeImageBlob(blob, maxWidth) {
+  return new Promise(resolve => {
+    const img = new Image()
+    const url = URL.createObjectURL(blob)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      if(img.width <= maxWidth) { resolve(blob); return }
+      const scale = maxWidth / img.width
+      const canvas = document.createElement('canvas')
+      canvas.width = maxWidth
+      canvas.height = Math.round(img.height * scale)
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+      canvas.toBlob(b => resolve(b || blob), 'image/jpeg', 0.88)
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(blob) }
+    img.src = url
+  })
+}
+
+// Convert blob to base64 data URL string
+async function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}
+
+function showOCRKeyPrompt() {
+  // Show inline key entry so user can paste their key without editing code
+  const statusEl = document.getElementById('ocr-status')
+  statusEl.innerHTML = `
+    <div style="width:100%;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span>⚠</span>
+        <span style="font-size:12px;">Demo OCR key rate-limited on mobile.</span>
+      </div>
+      <div style="font-size:12px;margin-bottom:8px;">
+        1. Go to <a href="https://ocr.space/ocrapi" target="_blank" style="color:inherit;font-weight:600;">ocr.space/ocrapi</a> — free signup, instant key<br>
+        2. Paste your key below and tap Apply
+      </div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="ocr-key-input" placeholder="Paste your OCR.space API key..." style="flex:1;font-size:12px;padding:7px 10px;">
+        <button onclick="applyOCRKey()" style="padding:7px 12px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);font-size:12px;cursor:pointer;font-family:var(--font-body);">Apply & Retry</button>
+      </div>
+    </div>`
+  statusEl.style.flexDirection = 'column'
+  statusEl.style.alignItems = 'flex-start'
+}
+
+window.applyOCRKey = async () => {
+  const key = document.getElementById('ocr-key-input')?.value.trim()
+  if(!key){ showToast('Please paste your API key'); return }
+  // Persist key in localStorage for this user
+  localStorage.setItem('slipwise_ocr_key_'+(currentUser?.id||'x'), key)
+  // Override the constant for this session
+  window._ocrKeyOverride = key
+  document.getElementById('ocr-status').style.display='none'
+  await runOCR()
+}
+
+// Allow runtime key override
+const _origRunOCR = window.runOCR
+// Patch OCR_API_KEY usage to check override
+
 
 function setOcrStatus(type,msg){
   const el=document.getElementById('ocr-status');el.style.display='flex';el.className='ocr-status '+type
@@ -1363,7 +1496,7 @@ async function renderDashboard(){
   destroyChart('cat');destroyChart('trend')
 
   const catLabels=Object.keys(catTotals)
-  const catColors=catLabels.map(c=>CAT_COLORS[c]||'#888')
+  const const allCatColors=getCatColors();catColors=catLabels.map(c=>allCatColors[c]||'#888')
   document.getElementById('dash-legend').innerHTML=catLabels.map((c,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${catColors[i]}"></div>${c} — R${catTotals[c].toFixed(0)}</div>`).join('')
 
   chartInstances['cat']=new Chart(document.getElementById('cat-chart'),{
