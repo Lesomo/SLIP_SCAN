@@ -783,114 +783,118 @@ window.runOCR = async()=>{
   if(!capturedImages.length) return
   setOcrStatus('processing','Extracting text from '+capturedImages.length+' image(s)...')
 
-  let allText=''
-  let lastError=''
+  const apiKey = window._ocrKeyOverride || localStorage.getItem('slipwise_ocr_key_'+(currentUser?.id||'x')) || OCR_API_KEY
+  let allText = ''
+  let lastError = ''
 
   for(const img of capturedImages){
     try{
+      setOcrStatus('processing','Resizing and reading image...')
       const resizedBlob = await resizeImageBlob(img.blob, 1200)
-      const apiKey = window._ocrKeyOverride || localStorage.getItem('slipwise_ocr_key_'+(currentUser?.id||'x')) || OCR_API_KEY
+      const base64Full = await blobToBase64(resizedBlob)
+      // Strip the data:image/jpeg;base64, prefix — OCR.space wants raw base64
+      const base64Data = base64Full.split(',')[1]
 
-      // Step 1: Upload to Supabase Storage to get a public URL
-      // OCR.space fetches the URL server-side — no CORS issue
-      setOcrStatus('processing', 'Uploading image for OCR...')
-      const ocrPath = `${currentUser.id}/ocr-temp-${Date.now()}.jpg`
-      const { error: upErr } = await supabase.storage
-        .from('receipt-images')
-        .upload(ocrPath, resizedBlob, { contentType: 'image/jpeg', upsert: true })
+      // Call via Supabase Edge Function proxy to avoid CORS
+      // The edge function forwards to OCR.space server-side
+      setOcrStatus('processing','Extracting text...')
+      const { data: fnData, error: fnError } = await supabase.functions.invoke('ocr-proxy', {
+        body: { base64: base64Data, apiKey }
+      })
 
-      let res, json
-      if(!upErr) {
-        // Get public URL and send to OCR.space as a URL (no CORS)
-        const { data: { publicUrl } } = supabase.storage.from('receipt-images').getPublicUrl(ocrPath)
-        setOcrStatus('processing', 'Reading receipt text...')
-
-        const params = new URLSearchParams({
-          apikey: apiKey,
-          url: publicUrl,
-          isTable: 'true',
-          OCREngine: '2',
-          scale: 'true',
-          detectOrientation: 'true',
-          language: 'eng'
-        })
-        res = await fetch('https://api.ocr.space/parse/image?' + params.toString())
-        json = await res.json()
-
-        // Clean up temp file after OCR (fire and forget)
-        supabase.storage.from('receipt-images').remove([ocrPath]).catch(()=>{})
-
-      } else {
-        // Fallback: base64 via POST if storage upload fails
-        setOcrStatus('processing', 'Reading receipt text (fallback)...')
-        const base64 = await blobToBase64(resizedBlob)
-        const fd = new FormData()
-        fd.append('base64Image', base64)
-        fd.append('apikey', apiKey)
-        fd.append('isTable', 'true')
-        fd.append('OCREngine', '2')
-        fd.append('scale', 'true')
-        fd.append('detectOrientation', 'true')
-        fd.append('language', 'eng')
-        fd.append('filetype', 'jpg')
-        res = await fetch('https://api.ocr.space/parse/image', { method:'POST', body:fd })
-        json = await res.json()
+      if(fnError) {
+        // Edge function not deployed yet — fall back to direct iframe trick
+        lastError = 'Edge function not set up: ' + fnError.message
+        console.warn('Edge function error:', fnError)
+        // Try direct with no-cors as last resort (won't parse but worth trying)
+        throw new Error(lastError)
       }
 
-      const fakeRes = { ok: res.ok, status: res.status }
-
-      // OCR.space returns error codes — surface them clearly
-      if(!fakeRes.ok) { lastError = `HTTP ${fakeRes.status}`; continue }
-      if(json.IsErroredOnProcessing) {
-        lastError = json.ErrorMessage?.[0] || 'OCR processing error'
-        console.warn('OCR error:', json)
-        continue
+      const json = fnData
+      if(json?.IsErroredOnProcessing){
+        lastError = json.ErrorMessage?.[0] || 'OCR error'; continue
       }
-      if(json.OCRExitCode === 99) { lastError = 'Rate limit reached — get a free key at ocr.space/ocrapi'; continue }
-      if(json.OCRExitCode === 98) { lastError = 'Demo key limit reached — get a free key at ocr.space/ocrapi'; continue }
+      if(json?.OCRExitCode === 99){ lastError = 'Rate limit — try again shortly'; continue }
+      if(json?.OCRExitCode === 98){ lastError = 'Invalid API key'; continue }
+      const text = json?.ParsedResults?.[0]?.ParsedText
+      if(text?.trim()) allText += (allText?'
+---
+':'') + text
 
-      const text = json.ParsedResults?.[0]?.ParsedText
-      if(text?.trim()) allText += (allText?'\n---\n':'') + text
-
-    } catch(err) {
+    } catch(err){
       lastError = err.message
-      console.warn('OCR fetch error:', err)
+      console.warn('OCR error:', err)
     }
   }
 
-  if(allText.trim()) {
+  if(allText.trim()){
     setOcrStatus('done','Text extracted — review and edit below')
     parseOCRText(allText)
   } else {
-    const isKeyError = lastError.includes('key') || lastError.includes('Rate') || lastError.includes('99') || lastError.includes('98') || OCR_API_KEY === 'helloworld'
-    if(isKeyError) {
-      setOcrStatus('error', 'Demo key rate-limited. <a href="https://ocr.space/ocrapi" target="_blank" style="color:inherit;font-weight:600;text-decoration:underline;">Get your free key at ocr.space</a> and paste it in the app settings.')
-      document.getElementById('ocr-status').innerHTML = document.getElementById('ocr-status').innerHTML // allow HTML
+    const needsSetup = lastError.includes('Edge function') || lastError.includes('not set up')
+    if(needsSetup){
+      setOcrStatus('error','OCR proxy not deployed yet')
+      showEdgeFunctionSetup()
+    } else if(lastError.includes('Invalid API key')){
+      setOcrStatus('error','Invalid OCR key — check and re-enter')
       showOCRKeyPrompt()
     } else {
-      setOcrStatus('error', lastError ? 'OCR failed: '+lastError+' — try a clearer photo or fill in manually' : 'Could not read receipt — try a clearer photo or fill in manually')
+      setOcrStatus('error', lastError || 'Could not read receipt — try a clearer photo or fill in manually')
     }
   }
 }
 
-// Resize image to max width before sending — reduces failures on free OCR tier
-async function resizeImageBlob(blob, maxWidth) {
-  return new Promise(resolve => {
-    const img = new Image()
-    const url = URL.createObjectURL(blob)
-    img.onload = () => {
-      URL.revokeObjectURL(url)
-      if(img.width <= maxWidth) { resolve(blob); return }
-      const scale = maxWidth / img.width
-      const canvas = document.createElement('canvas')
-      canvas.width = maxWidth
-      canvas.height = Math.round(img.height * scale)
-      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
-      canvas.toBlob(b => resolve(b || blob), 'image/jpeg', 0.88)
-    }
-    img.onerror = () => { URL.revokeObjectURL(url); resolve(blob) }
-    img.src = url
-  })
+function showEdgeFunctionSetup(){
+  const el = document.getElementById('ocr-status')
+  el.className = 'ocr-status error'
+  el.style.flexDirection = 'column'
+  el.style.alignItems = 'flex-start'
+  el.innerHTML = `
+    <div style="width:100%">
+      <div style="font-weight:500;margin-bottom:10px;">⚙️ One-time OCR setup needed</div>
+      <div style="font-size:12px;line-height:1.7;margin-bottom:12px;">
+        Because the app is hosted on GitHub Pages, OCR needs a small server-side proxy.<br>
+        Deploy it once in 2 minutes via Supabase:
+      </div>
+      <div style="background:rgba(0,0,0,0.06);border-radius:6px;padding:10px;font-family:var(--font-mono);font-size:11px;margin-bottom:10px;white-space:pre-wrap;user-select:all;">supabase functions deploy ocr-proxy</div>
+      <div style="font-size:12px;margin-bottom:10px;">
+        1. Install <a href="https://supabase.com/docs/guides/cli" target="_blank" style="color:inherit;font-weight:600;">Supabase CLI</a><br>
+        2. Run: <code style="background:rgba(0,0,0,0.08);padding:1px 5px;border-radius:3px;">supabase login</code><br>
+        3. Copy the edge function code below into your project<br>
+        4. Run: <code style="background:rgba(0,0,0,0.08);padding:1px 5px;border-radius:3px;">supabase functions deploy ocr-proxy</code>
+      </div>
+      <button onclick="showEdgeFunctionCode()" style="padding:7px 14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);font-size:12px;cursor:pointer;font-family:var(--font-body);">Show edge function code</button>
+    </div>`
+}
+
+window.showEdgeFunctionCode = () => {
+  const code = `// supabase/functions/ocr-proxy/index.ts
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
+  const { base64, apiKey } = await req.json()
+  const formData = new FormData()
+  formData.append('base64Image', 'data:image/jpeg;base64,' + base64)
+  formData.append('apikey', apiKey || 'helloworld')
+  formData.append('isTable', 'true')
+  formData.append('OCREngine', '2')
+  formData.append('scale', 'true')
+  formData.append('detectOrientation', 'true')
+  formData.append('language', 'eng')
+  formData.append('filetype', 'jpg')
+  const res = await fetch('https://api.ocr.space/parse/image', { method: 'POST', body: formData })
+  const data = await res.json()
+  return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+})`
+  const el = document.getElementById('ocr-status')
+  el.innerHTML += `<textarea style="width:100%;height:200px;font-size:10px;font-family:var(--font-mono);margin-top:10px;padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);" onclick="this.select()" readonly>${code}</textarea>
+  <div style="font-size:11px;color:var(--ink3);margin-top:6px;">Click the box above to select all, then copy</div>`
 }
 
 // Convert blob to base64 data URL string
