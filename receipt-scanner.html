@@ -829,7 +829,7 @@ window.runOCR = async()=>{
       // Call via Supabase Edge Function proxy to avoid CORS
       // The edge function forwards to OCR.space server-side
       setOcrStatus('processing','Extracting text...')
-      const { data: fnData, error: fnError } = await supabase.functions.invoke('ocr-proxy', {
+      const { data: fnData, error: fnError } = await supabase.functions.invoke('dynamic-endpoint', {
         body: { base64: base64Data, apiKey }
       })
 
