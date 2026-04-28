@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧾</text></svg>">
@@ -779,6 +778,38 @@ window.closeCamera = ()=>{if(cameraStream){cameraStream.getTracks().forEach(t=>t
 // Paste it below to replace 'helloworld'
 const OCR_API_KEY = 'helloworld'
 
+
+
+// Resize image before OCR — large phone photos cause failures on free tier
+async function resizeImageBlob(blob, maxWidth) {
+  return new Promise(resolve => {
+    const img = new Image()
+    const url = URL.createObjectURL(blob)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      if(img.width <= maxWidth) { resolve(blob); return }
+      const scale = maxWidth / img.width
+      const canvas = document.createElement('canvas')
+      canvas.width = maxWidth
+      canvas.height = Math.round(img.height * scale)
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+      canvas.toBlob(b => resolve(b || blob), 'image/jpeg', 0.88)
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(blob) }
+    img.src = url
+  })
+}
+
+// Convert blob to base64 data URL string
+async function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}
+
 window.runOCR = async()=>{
   if(!capturedImages.length) return
   setOcrStatus('processing','Extracting text from '+capturedImages.length+' image(s)...')
@@ -895,15 +926,6 @@ serve(async (req) => {
   <div style="font-size:11px;color:var(--ink3);margin-top:6px;">Click the box above to select all, then copy</div>`
 }
 
-// Convert blob to base64 data URL string
-async function blobToBase64(blob) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = reject
-    reader.readAsDataURL(blob)
-  })
-}
 
 function showOCRKeyPrompt() {
   // Show inline key entry so user can paste their key without editing code
