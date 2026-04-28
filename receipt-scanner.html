@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧾</text></svg>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Slipwise — Receipt Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -782,44 +783,64 @@ window.runOCR = async()=>{
   if(!capturedImages.length) return
   setOcrStatus('processing','Extracting text from '+capturedImages.length+' image(s)...')
 
-  // Warn if still on demo key
-  if(OCR_API_KEY === 'helloworld') {
-    setOcrStatus('processing','Using demo key — may fail on mobile. See tip below.')
-  }
-
   let allText=''
   let lastError=''
 
   for(const img of capturedImages){
     try{
-      // Resize image before sending — large photos fail on free tier
-      const resizedBlob = await resizeImageBlob(img.blob, 1600)
-
-      // Convert blob to base64 — avoids CORS issues when hosted on GitHub Pages etc.
-      const base64 = await blobToBase64(resizedBlob)
+      const resizedBlob = await resizeImageBlob(img.blob, 1200)
       const apiKey = window._ocrKeyOverride || localStorage.getItem('slipwise_ocr_key_'+(currentUser?.id||'x')) || OCR_API_KEY
 
-      const fd = new FormData()
-      fd.append('base64Image', base64)
-      fd.append('apikey', apiKey)
-      fd.append('isTable', 'true')
-      fd.append('OCREngine', '2')
-      fd.append('scale', 'true')
-      fd.append('detectOrientation', 'true')
-      fd.append('language', 'eng')
-      fd.append('filetype', 'jpg')
+      // Step 1: Upload to Supabase Storage to get a public URL
+      // OCR.space fetches the URL server-side — no CORS issue
+      setOcrStatus('processing', 'Uploading image for OCR...')
+      const ocrPath = `${currentUser.id}/ocr-temp-${Date.now()}.jpg`
+      const { error: upErr } = await supabase.storage
+        .from('receipt-images')
+        .upload(ocrPath, resizedBlob, { contentType: 'image/jpeg', upsert: true })
 
-      const res = await fetch('https://api.ocr.space/parse/image', {
-        method: 'POST',
-        body: fd,
-        mode: 'cors'
-      })
+      let res, json
+      if(!upErr) {
+        // Get public URL and send to OCR.space as a URL (no CORS)
+        const { data: { publicUrl } } = supabase.storage.from('receipt-images').getPublicUrl(ocrPath)
+        setOcrStatus('processing', 'Reading receipt text...')
 
-      if(!res.ok) { lastError = `HTTP ${res.status}`; continue }
+        const params = new URLSearchParams({
+          apikey: apiKey,
+          url: publicUrl,
+          isTable: 'true',
+          OCREngine: '2',
+          scale: 'true',
+          detectOrientation: 'true',
+          language: 'eng'
+        })
+        res = await fetch('https://api.ocr.space/parse/image?' + params.toString())
+        json = await res.json()
 
-      const json = await res.json()
+        // Clean up temp file after OCR (fire and forget)
+        supabase.storage.from('receipt-images').remove([ocrPath]).catch(()=>{})
+
+      } else {
+        // Fallback: base64 via POST if storage upload fails
+        setOcrStatus('processing', 'Reading receipt text (fallback)...')
+        const base64 = await blobToBase64(resizedBlob)
+        const fd = new FormData()
+        fd.append('base64Image', base64)
+        fd.append('apikey', apiKey)
+        fd.append('isTable', 'true')
+        fd.append('OCREngine', '2')
+        fd.append('scale', 'true')
+        fd.append('detectOrientation', 'true')
+        fd.append('language', 'eng')
+        fd.append('filetype', 'jpg')
+        res = await fetch('https://api.ocr.space/parse/image', { method:'POST', body:fd })
+        json = await res.json()
+      }
+
+      const fakeRes = { ok: res.ok, status: res.status }
 
       // OCR.space returns error codes — surface them clearly
+      if(!fakeRes.ok) { lastError = `HTTP ${fakeRes.status}`; continue }
       if(json.IsErroredOnProcessing) {
         lastError = json.ErrorMessage?.[0] || 'OCR processing error'
         console.warn('OCR error:', json)
