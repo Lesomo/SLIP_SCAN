@@ -817,9 +817,7 @@ window.runOCR = async()=>{
       if(json?.OCRExitCode === 99){ lastError = 'Rate limit — try again shortly'; continue }
       if(json?.OCRExitCode === 98){ lastError = 'Invalid API key'; continue }
       const text = json?.ParsedResults?.[0]?.ParsedText
-      if(text?.trim()) allText += (allText?'
----
-':'') + text
+      if(text?.trim()) allText += (allText ? '\n---\n' : '') + text
 
     } catch(err){
       lastError = err.message
